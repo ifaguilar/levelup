@@ -2,7 +2,7 @@ import { redirect } from "react-router-dom";
 
 // import { getUser } from "../api/user";
 
-const warehouseLoader = async () => {
+const inventoryLoader = async () => {
   // const user = await getUser();
 
   // if (!user) {
@@ -12,4 +12,4 @@ const warehouseLoader = async () => {
   return null;
 };
 
-export default warehouseLoader;
+export default inventoryLoader;

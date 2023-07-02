@@ -5,9 +5,14 @@ export const SIDEBAR_ITEMS = [
     link: "/",
   },
   {
-    name: "purchases",
-    text: "Compras",
-    link: "/purchases",
+    name: "hr",
+    text: "Recursos Humanos",
+    link: "/hr",
+  },
+  {
+    name: "inventory",
+    text: "Inventario",
+    link: "/inventory",
   },
   {
     name: "sales",
@@ -15,14 +20,14 @@ export const SIDEBAR_ITEMS = [
     link: "/sales",
   },
   {
-    name: "finances",
-    text: "Finanzas",
-    link: "/finances",
+    name: "support",
+    text: "Servicio y soporte",
+    link: "/support",
   },
   {
-    name: "warehouse",
-    text: "Almacén",
-    link: "/warehouse",
+    name: "analytics",
+    text: "Analíticas",
+    link: "/analytics",
   },
 ];
 
@@ -31,5 +36,108 @@ export const DROPDOWN_ITEMS = [
     name: "profile",
     text: "Perfil",
     link: "/profile",
+  },
+];
+
+export const SIGNUP_FORM_BASIC_INFO = [
+  {
+    name: "firstName",
+    type: "text",
+    label: "Nombre",
+    placeholder: "Ingrese su nombre...",
+  },
+  {
+    name: "lastName",
+    type: "text",
+    label: "Apellido",
+    placeholder: "Ingrese su apellido...",
+  },
+  {
+    name: "job",
+    type: "select",
+    label: "Trabajo",
+    placeholder: "Seleccione su trabajo...",
+  },
+];
+
+export const SIGNUP_FORM_PERSONAL_INFO = [
+  {
+    name: "phone",
+    type: "text",
+    label: "Teléfono",
+    placeholder: "Ingrese su teléfono...",
+  },
+  {
+    name: "birthdate",
+    type: "date",
+    label: "Fecha de nacimiento",
+    placeholder: "Ingrese su fecha de nacimiento...",
+  },
+  {
+    name: "gender",
+    type: "select",
+    label: "Género",
+    placeholder: "Seleccione su género...",
+  },
+];
+
+export const SIGNUP_FORM_ADDRESS_INFO = [
+  {
+    name: "department",
+    type: "select",
+    label: "Departamento",
+    placeholder: "Seleccione su departamento...",
+  },
+  {
+    name: "municipality",
+    type: "select",
+    label: "Municipio",
+    placeholder: "Seleccione su municipio...",
+  },
+  {
+    name: "address",
+    type: "text",
+    label: "Dirección",
+    placeholder: "Ingrese su dirección...",
+  },
+];
+
+export const SIGNUP_FORM_SECURITY_INFO = [
+  {
+    name: "email",
+    type: "email",
+    label: "Correo electrónico",
+    placeholder: "Ingrese su correo electrónico...",
+  },
+  {
+    name: "password",
+    type: "password",
+    label: "Contraseña",
+    placeholder: "Ingrese su contraseña...",
+  },
+  {
+    name: "confirmPassword",
+    type: "password",
+    label: "Confirmar contraseña",
+    placeholder: "Confirme su contraseña...",
+  },
+];
+
+export const SIGNUP_FORM_STEPS = [
+  {
+    title: "Información básica",
+    fields: SIGNUP_FORM_BASIC_INFO,
+  },
+  {
+    title: "Información personal",
+    fields: SIGNUP_FORM_PERSONAL_INFO,
+  },
+  {
+    title: "Información de dirección",
+    fields: SIGNUP_FORM_ADDRESS_INFO,
+  },
+  {
+    title: "Información de seguridad",
+    fields: SIGNUP_FORM_SECURITY_INFO,
   },
 ];

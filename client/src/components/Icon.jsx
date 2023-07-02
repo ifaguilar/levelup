@@ -2,9 +2,10 @@ import React from "react";
 import {
   BsSpeedometer2,
   BsGraphUpArrow,
-  BsCart3,
+  BsPeople,
   BsBarChartLine,
   BsBoxes,
+  BsHeadset,
   BsBoxArrowRight,
   BsPerson,
   BsGithub,
@@ -15,20 +16,24 @@ const Icon = ({ icon }) => {
     return <BsSpeedometer2 />;
   }
 
-  if (icon === "purchases") {
-    return <BsCart3 />;
+  if (icon === "hr") {
+    return <BsPeople />;
+  }
+
+  if (icon === "inventory") {
+    return <BsBoxes />;
   }
 
   if (icon === "sales") {
     return <BsGraphUpArrow />;
   }
 
-  if (icon === "finances") {
-    return <BsBarChartLine />;
+  if (icon === "support") {
+    return <BsHeadset />;
   }
 
-  if (icon === "warehouse") {
-    return <BsBoxes />;
+  if (icon === "analytics") {
+    return <BsBarChartLine />;
   }
 
   if (icon === "profile") {

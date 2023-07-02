@@ -45,3 +45,11 @@ label,
 .label {
   @apply uppercase text-neutral-600;
 }
+
+input[type="date"] {
+  @apply relative appearance-none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  @apply absolute inset-0 w-full h-full text-transparent bg-transparent bg-right opacity-0 appearance-none cursor-pointer;
+}
