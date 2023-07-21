@@ -1,6 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { BsList } from "react-icons/bs";
+import { BsList, BsBell } from "react-icons/bs";
 
 // Components
 import Logo from "./Logo";
@@ -39,12 +38,20 @@ const Navbar = ({
         </IconButton>
         <Logo className="h-6" onClick={handleClose} />
       </div>
-      <ProfilePic
-        src={user?.profile_pic_url}
-        className="cursor-pointer"
-        onClick={openDropdown}
-      />
-      <Dropdown dropdownOpen={dropdownOpen} setDropdownOpen={setDropdownOpen} />
+      <div className="flex items-center gap-4">
+        <IconButton>
+          <BsBell />
+        </IconButton>
+        <ProfilePic
+          src={user?.profile_pic_url}
+          className="cursor-pointer"
+          onClick={openDropdown}
+        />
+        <Dropdown
+          dropdownOpen={dropdownOpen}
+          setDropdownOpen={setDropdownOpen}
+        />
+      </div>
     </nav>
   );
 };

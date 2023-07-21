@@ -9,6 +9,9 @@ import {
   BsBoxArrowRight,
   BsPerson,
   BsGithub,
+  BsBox,
+  BsReceipt,
+  BsTicket,
 } from "react-icons/bs";
 
 const Icon = ({ icon }) => {
@@ -16,7 +19,7 @@ const Icon = ({ icon }) => {
     return <BsSpeedometer2 />;
   }
 
-  if (icon === "hr") {
+  if (icon === "hr" || icon === "people") {
     return <BsPeople />;
   }
 
@@ -46,6 +49,18 @@ const Icon = ({ icon }) => {
 
   if (icon === "github") {
     return <BsGithub />;
+  }
+
+  if (icon === "box") {
+    return <BsBox />;
+  }
+
+  if (icon === "receipt") {
+    return <BsReceipt />;
+  }
+
+  if (icon === "ticket") {
+    return <BsTicket />;
   }
 
   return null;

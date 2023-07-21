@@ -8,6 +8,10 @@ import jobRouter from "./src/routes/jobRoutes.js";
 import genderRouter from "./src/routes/genderRoutes.js";
 import departmentRouter from "./src/routes/departmentRoutes.js";
 import municipalityRouter from "./src/routes/municipalityRoutes.js";
+import productRouter from "./src/routes/productRoutes.js";
+import personRouter from "./src/routes/personRoutes.js";
+import salesOrderRouter from "./src/routes/salesOrderRoutes.js";
+import ticketRouter from "./src/routes/ticketRoutes.js";
 
 // Functions
 dotenv.config();
@@ -27,6 +31,10 @@ app.use("/api/job", jobRouter);
 app.use("/api/gender", genderRouter);
 app.use("/api/department", departmentRouter);
 app.use("/api/municipality", municipalityRouter);
+app.use("/api/product", productRouter);
+app.use("/api/person", personRouter);
+app.use("/api/sales_order", salesOrderRouter);
+app.use("/api/ticket", ticketRouter);
 
 // Initialization
 app.listen(PORT, () => console.log(`Server started on port ${PORT}.`));

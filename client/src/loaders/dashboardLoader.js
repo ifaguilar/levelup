@@ -1,15 +1,58 @@
-import { redirect } from "react-router-dom";
+import { countProducts } from "../api/product";
+import { countEmployees } from "../api/person";
+import { countSalesOrders } from "../api/salesOrder";
+import { countTickets } from "../api/ticket";
 
-// import { getUser } from "../api/user";
+const dashboardLoader = async () => {
+  const { employeeCount } = await countEmployees();
+  const { productCount } = await countProducts();
+  const { salesOrderCount } = await countSalesOrders();
+  const { ticketCount } = await countTickets();
 
-const homeLoader = async () => {
-  // const user = await getUser();
+  const stats = [
+    {
+      title: "Empleados en planilla",
+      number: employeeCount,
+      icon: "people",
+      colors: {
+        cardBgColor: "bg-blue-100",
+        iconBgColor: "bg-blue-500",
+        iconTextColor: "text-blue-50",
+      },
+    },
+    {
+      title: "Productos en inventario",
+      number: productCount,
+      icon: "box",
+      colors: {
+        cardBgColor: "bg-amber-100",
+        iconBgColor: "bg-amber-500",
+        iconTextColor: "text-amber-50",
+      },
+    },
+    {
+      title: "Pedidos realizados",
+      number: salesOrderCount,
+      icon: "receipt",
+      colors: {
+        cardBgColor: "bg-green-100",
+        iconBgColor: "bg-green-500",
+        iconTextColor: "text-green-50",
+      },
+    },
+    {
+      title: "Tickets pendientes",
+      number: ticketCount,
+      icon: "ticket",
+      colors: {
+        cardBgColor: "bg-red-100",
+        iconBgColor: "bg-red-500",
+        iconTextColor: "text-red-50",
+      },
+    },
+  ];
 
-  // if (!user) {
-  //   return redirect("/login");
-  // }
-
-  return null;
+  return { stats };
 };
 
-export default homeLoader;
+export default dashboardLoader;

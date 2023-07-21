@@ -53,3 +53,19 @@ input[type="date"] {
 input[type="date"]::-webkit-calendar-picker-indicator {
   @apply absolute inset-0 w-full h-full text-transparent bg-transparent bg-right opacity-0 appearance-none cursor-pointer;
 }
+
+.card-stats {
+  @apply flex flex-col gap-4 p-8 rounded-xl;
+}
+
+.card-icon {
+  @apply flex items-center justify-center w-16 h-16 text-xl rounded-full;
+}
+
+.card-number {
+  @apply text-4xl font-bold;
+}
+
+.card-title {
+  @apply font-medium text-neutral-800;
+}

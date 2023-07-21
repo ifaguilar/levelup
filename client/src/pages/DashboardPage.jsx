@@ -1,33 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useLoaderData } from "react-router-dom";
 
-// import { testRequest } from "../api/test";
+// Components
+import Icon from "../components/Icon";
 
-const App = () => {
+const DashboardPage = () => {
   const user = JSON.parse(localStorage.getItem("user"));
-  // const [data, setData] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await testRequest();
-  //       setData(response);
-  //     } catch (error) {
-  //       console.error("Error:", error.message);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
+  const { stats } = useLoaderData();
 
   return (
     <div className="min-h-screen px-4 py-12 lg:p-24 mt-14">
-      <h3>
-        {`${user?.gender_name === "Masculino" ? "Bienvenido" : "Bienvenida"}, ${
-          user?.first_name
-        }`}
-      </h3>
+      <div className="flex flex-col gap-24">
+        <h4>
+          {`${
+            user?.gender_name === "Masculino" ? "Bienvenido" : "Bienvenida"
+          }, ${user?.first_name}`}
+        </h4>
+        <div className="grid grid-rows-4 gap-12 md:grid-cols-2 md:grid-rows-2 lg:grid-rows-1 lg:grid-cols-4">
+          {stats.map((stat, index) => (
+            <div
+              key={index}
+              className={`card-stats ${stat.colors.cardBgColor}`}
+            >
+              <div
+                className={`card-icon ${stat.colors.iconBgColor} ${stat.colors.iconTextColor}`}
+              >
+                <Icon icon={stat.icon} />
+              </div>
+              <p className="card-number">{stat.number}</p>
+              <p className="card-title">{stat.title}</p>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-2 gap-12">
+          <div className="card"></div>
+          <div className="card"></div>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default App;
+export default DashboardPage;
