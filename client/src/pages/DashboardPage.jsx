@@ -12,11 +12,11 @@ const DashboardPage = () => {
   return (
     <div className="min-h-screen px-4 py-12 lg:p-24 mt-14">
       <div className="flex flex-col gap-24">
-        <h4>
+        <h3>
           {`${
             user?.gender_name === "Masculino" ? "Bienvenido" : "Bienvenida"
           }, ${user?.first_name}`}
-        </h4>
+        </h3>
         <div className="grid grid-rows-4 gap-12 md:grid-cols-2 md:grid-rows-2 lg:grid-rows-1 lg:grid-cols-4">
           {stats.map((stat, index) => (
             <div

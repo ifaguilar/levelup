@@ -219,7 +219,6 @@ CREATE TABLE system_log (
 -- Gender
 INSERT INTO gender (gender_name) VALUES ('Femenino');
 INSERT INTO gender (gender_name) VALUES ('Masculino');
-INSERT INTO gender (gender_name) VALUES ('Otro');
 
 -- Departments
 INSERT INTO department (department_name) VALUES ('Atlántida');

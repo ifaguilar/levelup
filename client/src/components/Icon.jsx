@@ -12,6 +12,8 @@ import {
   BsBox,
   BsReceipt,
   BsTicket,
+  BsPencilSquare,
+  BsTrash,
 } from "react-icons/bs";
 
 const Icon = ({ icon }) => {
@@ -61,6 +63,14 @@ const Icon = ({ icon }) => {
 
   if (icon === "ticket") {
     return <BsTicket />;
+  }
+
+  if (icon === "edit") {
+    return <BsPencilSquare />;
+  }
+
+  if (icon === "delete") {
+    return <BsTrash />;
   }
 
   return null;
