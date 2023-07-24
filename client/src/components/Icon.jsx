@@ -14,6 +14,7 @@ import {
   BsTicket,
   BsPencilSquare,
   BsTrash,
+  BsXLg,
 } from "react-icons/bs";
 
 const Icon = ({ icon }) => {
@@ -71,6 +72,10 @@ const Icon = ({ icon }) => {
 
   if (icon === "delete") {
     return <BsTrash />;
+  }
+
+  if (icon === "close") {
+    return <BsXLg />;
   }
 
   return null;

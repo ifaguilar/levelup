@@ -4,6 +4,9 @@ import React from "react";
 import IconButton from "./IconButton";
 import Icon from "./Icon";
 
+// Utils
+import { formatDateTime } from "../utils/dateTime";
+
 const Table = ({ headers, rows, onEdit, onDelete }) => {
   if (rows.length === 0) {
     return <p>No se encontraron datos.</p>;
@@ -24,7 +27,11 @@ const Table = ({ headers, rows, onEdit, onDelete }) => {
           {rows.map((row) => (
             <tr key={row.id}>
               {headers.map((header) => (
-                <td key={`${row.id}-${header.id}`}>{row[header.id]}</td>
+                <td key={`${row.id}-${header.id}`} title={row[header.id]}>
+                  {header.id === "created_at" || header.id === "modified_at"
+                    ? formatDateTime(row[header.id])
+                    : row[header.id]}
+                </td>
               ))}
               <td>
                 <IconButton

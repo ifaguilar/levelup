@@ -612,6 +612,42 @@ INSERT INTO person (
   1
 );
 
+INSERT INTO person (
+  first_name,
+  last_name,
+  email,
+  phone,
+  birthdate,
+  gender_id,
+  address_id
+) VALUES (
+  'Isaac',
+  'Aguilar',
+  'isaac@levelup-is.tech',
+  '1111-1111',
+  '1990-01-01',
+  2,
+  1
+);
+
+INSERT INTO person (
+  first_name,
+  last_name,
+  email,
+  phone,
+  birthdate,
+  gender_id,
+  address_id
+) VALUES (
+  'Josué',
+  'Zelaya',
+  'josue@levelup-is.tech',
+  '2222-2222',
+  '1990-01-01',
+  2,
+  1
+);
+
 -- Employee
 INSERT INTO employee (
   password,
@@ -622,5 +658,29 @@ INSERT INTO employee (
   '$2a$10$QTiuId6lKWW1reqPJRIpyu3x3L5cmTGYyeTBGGcoKpSk3QPfdbNcO',
   'https://ui-avatars.com/api/?name=John+Doe&background=random&size=128',
   1,
+  1
+);
+
+INSERT INTO employee (
+  password,
+  profile_pic_url,
+  person_id,
+  job_id
+) VALUES (
+  '$2a$10$QTiuId6lKWW1reqPJRIpyu3x3L5cmTGYyeTBGGcoKpSk3QPfdbNcO',
+  'https://ui-avatars.com/api/?name=Isaac+Aguilar&background=random&size=128',
+  2,
+  1
+);
+
+INSERT INTO employee (
+  password,
+  profile_pic_url,
+  person_id,
+  job_id
+) VALUES (
+  '$2a$10$QTiuId6lKWW1reqPJRIpyu3x3L5cmTGYyeTBGGcoKpSk3QPfdbNcO',
+  'https://ui-avatars.com/api/?name=Josué+Zelaya&background=random&size=128',
+  3,
   1
 );

@@ -92,7 +92,7 @@ const SignupPage = () => {
             address: "",
             email: "",
             password: "",
-            comfirmPassword: "",
+            confirmPassword: "",
           }}
           validationSchema={signupSchema}
           onSubmit={handleSubmit}

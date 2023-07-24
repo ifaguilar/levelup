@@ -44,11 +44,11 @@ tbody tr:hover {
 }
 
 th {
-  @apply p-4 text-sm font-medium text-left uppercase w-48;
+  @apply p-4 text-sm font-medium text-left uppercase w-36 truncate;
 }
 
 td {
-  @apply px-4;
+  @apply px-4 truncate;
 }
 
 label,

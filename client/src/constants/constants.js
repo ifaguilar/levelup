@@ -141,3 +141,23 @@ export const SIGNUP_FORM_STEPS = [
     fields: SIGNUP_FORM_SECURITY_INFO,
   },
 ];
+
+export const EMPLOYEE_TABLE_HEADERS = [
+  { id: "id", text: "ID" },
+  { id: "full_name", text: "Nombre completo" },
+  { id: "email", text: "Correo electrónico" },
+  { id: "job_title", text: "Trabajo" },
+  { id: "created_at", text: "Creado el" },
+  { id: "modified_at", text: "Modificado el" },
+];
+
+export const DATE_TIME_OPTIONS = {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
+  hour12: true,
+  timeZone: "America/Tegucigalpa",
+};

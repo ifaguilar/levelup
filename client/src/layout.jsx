@@ -10,10 +10,11 @@ import Footer from "./components/Footer";
 import { AuthContext } from "./context/AuthProvider";
 
 const Layout = () => {
+  const { isAuthenticated } = useContext(AuthContext);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const overlayRef = useRef();
-  const { isAuthenticated } = useContext(AuthContext);
 
   useEffect(() => {
     document.addEventListener("click", handleOverlay);
@@ -29,6 +30,7 @@ const Layout = () => {
     if (isClicked) {
       setSidebarOpen(false);
       setDropdownOpen(false);
+      setModalOpen(false);
     }
   };
 
@@ -45,7 +47,7 @@ const Layout = () => {
       <div
         ref={overlayRef}
         className={`${
-          sidebarOpen || dropdownOpen ? "block" : "hidden"
+          sidebarOpen || dropdownOpen || modalOpen ? "block" : "hidden"
         } absolute bg-black/10 inset-0 z-40`}
       ></div>
       <Navbar
@@ -55,7 +57,7 @@ const Layout = () => {
         setDropdownOpen={setDropdownOpen}
       />
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <Outlet />
+      <Outlet context={[modalOpen, setModalOpen]} />
       <Footer />
       <ScrollRestoration />
     </div>
