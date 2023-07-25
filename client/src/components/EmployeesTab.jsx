@@ -3,7 +3,12 @@ import { useOutletContext } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 // API
-import { employees, deleteEmployee, createEmployee } from "../api/person";
+import {
+  employees,
+  deleteEmployee,
+  createEmployee,
+  getEmployeeById,
+} from "../api/person";
 import { getJobs } from "../api/job";
 import { getGenders } from "../api/gender";
 import { getDepartments } from "../api/department";
@@ -32,6 +37,7 @@ const EmployeesTab = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [rows, setRows] = useState([]);
+  const [currentEmployee, setCurrentEmployee] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [genders, setGenders] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -103,19 +109,36 @@ const EmployeesTab = () => {
 
   useEffect(() => {
     if (modalOpen === false) {
+      setMunicipalities([]);
       setIsEditing(false);
       setIsCreating(false);
     }
   }, [modalOpen]);
 
-  const openCreateForm = async () => {
+  const openCreateForm = () => {
     setModalOpen(true);
     setIsCreating(true);
   };
 
   const openEditForm = async (id) => {
-    setModalOpen(true);
-    setIsEditing(true);
+    try {
+      const employeeData = await getEmployeeById(id);
+
+      if (!employeeData.ok) {
+        throw new Error(employeeData.message);
+      }
+
+      const municipalityData = await getMunicipalitiesByDepartmentId(
+        employeeData.employee.department_id
+      );
+
+      setMunicipalities(municipalityData.municipalities);
+      setCurrentEmployee(employeeData.employee);
+      setModalOpen(true);
+      setIsEditing(true);
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 
   const handleCreate = async (values) => {
@@ -185,70 +208,32 @@ const EmployeesTab = () => {
         onDelete={handleDelete}
       />
       {modalOpen === true && isEditing ? (
-        <Modal title="Editar empleado" onClose={() => setModalOpen(false)}>
-          {/* <Formik
+        <Modal
+          title="Editar empleado"
+          onClose={() => {
+            setModalOpen(false);
+            setIsEditing(false);
+          }}
+        >
+          <Formik
             initialValues={{
-              first_name: "",
-              last_name: "",
-              email: "",
-              phone: "",
-              gender: "",
-              birthDate: "",
+              firstName: currentEmployee?.first_name,
+              lastName: currentEmployee?.last_name,
+              job: currentEmployee?.job_id,
+              phone: currentEmployee?.phone,
+              birthdate: new Date(currentEmployee?.birthdate)
+                .toISOString()
+                .slice(0, 10),
+              gender: currentEmployee?.gender_id,
+              department: currentEmployee?.department_id,
+              municipality: currentEmployee?.municipality_id,
+              address: currentEmployee?.address_description,
+              email: currentEmployee?.email,
             }}
             validationSchema={editEmployeeSchema}
             onSubmit={handleEdit}
           >
-            {({ isSubmitting, dirty, handleChange }) => (
-              <Form className="">
-                <div className="">
-                  <label htmlFor="first_name">Nombre</label>
-
-                  <Field name="first_name">
-                    {({ field, meta }) => (
-                      <Input
-                        touched={meta.touched ? meta.touched : false}
-                        error={meta.error ? meta.error : ""}
-                        type="text"
-                        placeholder="Enter your name"
-                        {...field}
-                      />
-                    )}
-                  </Field>
-
-                  <ErrorMessage name="first_name">
-                    {(message) => (
-                      <span className="text-red-600">{message}</span>
-                    )}
-                  </ErrorMessage>
-                </div>
-
-                <Button
-                  variant="primary"
-                  type="submit"
-                  disabled={isSubmitting || !dirty}
-                >
-                  Guardar cambios
-                </Button>
-              </Form>
-            )}
-          </Formik> */}
-          <Formik
-            initialValues={{
-              firstName: "",
-              lastName: "",
-              job: "",
-              phone: "",
-              birthdate: "",
-              gender: "",
-              department: "",
-              municipality: "",
-              address: "",
-              email: "",
-            }}
-            validationSchema={createEmployeeSchema}
-            onSubmit={handleCreate}
-          >
-            {({ isSubmitting, handleChange }) => (
+            {({ isSubmitting, handleChange, dirty }) => (
               <Form className="flex flex-col w-full gap-8 pr-4 overflow-y-auto max-h-96">
                 <div className="grid grid-rows-2 gap-12 md:grid-rows-1 md:grid-cols-2">
                   <div className="flex flex-col gap-2">
@@ -509,7 +494,11 @@ const EmployeesTab = () => {
                   </div>
                 </div>
 
-                <Button variant="primary" type="submit" disabled={isSubmitting}>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={isSubmitting || !dirty}
+                >
                   Guardar cambios
                 </Button>
               </Form>
@@ -519,7 +508,13 @@ const EmployeesTab = () => {
       ) : null}
 
       {modalOpen === true && isCreating ? (
-        <Modal title="Crear empleado" onClose={() => setModalOpen(false)}>
+        <Modal
+          title="Crear empleado"
+          onClose={() => {
+            setModalOpen(false);
+            setIsCreating(false);
+          }}
+        >
           <Formik
             initialValues={{
               firstName: "",

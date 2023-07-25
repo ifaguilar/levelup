@@ -7,6 +7,15 @@ export const employees = async () => {
   return data;
 };
 
+export const getEmployeeById = async (employeeId) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}api/person/employees/${employeeId}`
+  );
+  const data = await response.json();
+
+  return data;
+};
+
 export const createEmployee = async (values) => {
   const response = await fetch(
     `${import.meta.env.VITE_API_BASE_URL}api/person/employees`,
