@@ -34,6 +34,12 @@ const SignupPage = () => {
     try {
       const data = await signup(values);
 
+      if (data.errors) {
+        for (const errorMessage of data.errors) {
+          throw new Error(errorMessage);
+        }
+      }
+
       if (!data.ok) {
         throw new Error(data.message);
       }

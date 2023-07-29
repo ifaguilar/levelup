@@ -27,7 +27,14 @@ const Table = ({ headers, rows, onEdit, onDelete }) => {
           {rows.map((row) => (
             <tr key={row.id}>
               {headers.map((header) => (
-                <td key={`${row.id}-${header.id}`} title={row[header.id]}>
+                <td
+                  key={`${row.id}-${header.id}`}
+                  title={
+                    header.id === "created_at" || header.id === "modified_at"
+                      ? formatDateTime(row[header.id])
+                      : row[header.id]
+                  }
+                >
                   {header.id === "created_at" || header.id === "modified_at"
                     ? formatDateTime(row[header.id])
                     : row[header.id]}

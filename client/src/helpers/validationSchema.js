@@ -44,7 +44,9 @@ export const signupSchema = Yup.object({
     .email("Por favor, ingrese un correo electrónico válido.")
     .required("Por favor, ingrese su correo electrónico."),
 
-  password: Yup.string().required("Por favor, ingrese una contraseña."),
+  password: Yup.string()
+    .min(8, "Por favor, ingrese una contraseña con al menos 8 caracteres.")
+    .required("Por favor, ingrese una contraseña."),
 
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Las contraseñas no coinciden.")

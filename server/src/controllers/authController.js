@@ -205,6 +205,13 @@ export const signup = async (req, res) => {
       });
     }
 
+    if (error.message === "El número telefónico ya está en uso.") {
+      return res.status(400).json({
+        ok: false,
+        message: error.message,
+      });
+    }
+
     return res.status(500).json({
       ok: false,
       message: "Algo ha ido mal. Vuelva a intentarlo más tarde.",
