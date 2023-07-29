@@ -96,6 +96,14 @@ export const signup = async (req, res) => {
       throw new Error("El correo electrónico ya está en uso.");
     }
 
+    query = await db.query("SELECT phone FROM person WHERE phone = $1", [
+      phone,
+    ]);
+
+    if (query.rowCount !== 0) {
+      throw new Error("El número telefónico ya está en uso.");
+    }
+
     query = await db.query(
       `INSERT INTO address (
         address_description,

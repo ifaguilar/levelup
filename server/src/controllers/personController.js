@@ -24,6 +24,14 @@ export const createEmployee = async (req, res) => {
       throw new Error("El correo electrónico ya está en uso.");
     }
 
+    query = await db.query("SELECT phone FROM person WHERE phone = $1", [
+      phone,
+    ]);
+
+    if (query.rowCount !== 0) {
+      throw new Error("El número telefónico ya está en uso.");
+    }
+
     query = await db.query(
       `INSERT INTO address (
         address_description,
@@ -35,7 +43,7 @@ export const createEmployee = async (req, res) => {
       [address, parseInt(municipality)]
     );
 
-    const address_id = query.rows[0].id;
+    const addressId = query.rows[0].id;
 
     query = await db.query(
       `INSERT INTO person (
@@ -62,15 +70,15 @@ export const createEmployee = async (req, res) => {
         phone,
         birthdate,
         parseInt(gender),
-        address_id,
+        addressId,
       ]
     );
 
-    const person_id = query.rows[0].id;
+    const personId = query.rows[0].id;
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const encodedName = `${firstName}+${lastName}`;
-    const profile_pic_url = `https://ui-avatars.com/api/?name=${encodedName}&background=random&size=128&bold=true`;
+    const profilePicUrl = `https://ui-avatars.com/api/?name=${encodedName}&background=random&size=128&bold=true`;
 
     query = await db.query(
       `INSERT INTO employee (
@@ -84,7 +92,7 @@ export const createEmployee = async (req, res) => {
         $3,
         $4
       )`,
-      [hashedPassword, profile_pic_url, person_id, parseInt(job)]
+      [hashedPassword, profilePicUrl, personId, parseInt(job)]
     );
 
     query = await db.query(
@@ -128,6 +136,8 @@ export const createEmployee = async (req, res) => {
 
 export const editEmployee = async (req, res) => {
   try {
+    const id = req.params.id;
+
     const {
       firstName,
       lastName,
@@ -138,15 +148,30 @@ export const editEmployee = async (req, res) => {
       municipality,
       address,
       email,
-      password,
     } = req.body;
 
-    let query = await db.query("SELECT email FROM person WHERE email = $1", [
-      email,
+    let query = await db.query("SELECT person_id FROM employee WHERE id = $1", [
+      parseInt(id),
     ]);
+
+    const personId = query.rows[0].person_id;
+
+    query = await db.query(
+      "SELECT email FROM person WHERE email = $1 AND id != $2",
+      [email, personId]
+    );
 
     if (query.rowCount !== 0) {
       throw new Error("El correo electrónico ya está en uso.");
+    }
+
+    query = await db.query(
+      "SELECT phone FROM person WHERE phone = $1 AND id != $2",
+      [phone, personId]
+    );
+
+    if (query.rowCount !== 0) {
+      throw new Error("El número telefónico ya está en uso.");
     }
 
     query = await db.query(
@@ -160,26 +185,21 @@ export const editEmployee = async (req, res) => {
       [address, parseInt(municipality)]
     );
 
-    const address_id = query.rows[0].id;
+    const addressId = query.rows[0].id;
 
     query = await db.query(
-      `INSERT INTO person (
-        first_name,
-        last_name,
-        email,
-        phone,
-        birthdate,
-        gender_id,
-        address_id
-      ) VALUES (
-        $1,
-        $2,
-        $3,
-        $4,
-        $5,
-        $6,
-        $7
-      ) RETURNING id`,
+      `UPDATE person
+      SET
+        first_name = $1,
+        last_name = $2,
+        email = $3,
+        phone = $4,
+        birthdate = $5,
+        gender_id = $6,
+        address_id = $7,
+        modified_at = NOW()
+      WHERE id = $8
+      `,
       [
         firstName,
         lastName,
@@ -187,29 +207,22 @@ export const editEmployee = async (req, res) => {
         phone,
         birthdate,
         parseInt(gender),
-        address_id,
+        addressId,
+        personId,
       ]
     );
 
-    const person_id = query.rows[0].id;
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
     const encodedName = `${firstName}+${lastName}`;
-    const profile_pic_url = `https://ui-avatars.com/api/?name=${encodedName}&background=random&size=128&bold=true`;
+    const profilePicUrl = `https://ui-avatars.com/api/?name=${encodedName}&background=random&size=128&bold=true`;
 
     query = await db.query(
-      `INSERT INTO employee (
-        password,
-        profile_pic_url,
-        person_id,
-        job_id
-      ) VALUES (
-        $1,
-        $2,
-        $3,
-        $4
-      )`,
-      [hashedPassword, profile_pic_url, person_id, parseInt(job)]
+      `UPDATE employee
+      SET
+        profile_pic_url = $1,
+        job_id = $2,
+        modified_at = NOW()
+      WHERE id = $3`,
+      [profilePicUrl, parseInt(job), id]
     );
 
     query = await db.query(
@@ -231,7 +244,7 @@ export const editEmployee = async (req, res) => {
 
     return res.status(201).json({
       ok: true,
-      message: "Empleado creado correctamente.",
+      message: "Empleado editado correctamente.",
       employee: employee,
     });
   } catch (error) {
@@ -313,6 +326,7 @@ export const getEmployeeById = async (req, res) => {
     const query = await db.query(
       `
       SELECT
+        employee.id,
         person.first_name,
         person.last_name,
         employee.job_id,

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { toast } from "react-toastify";
 
 // API
 import {
   employees,
   deleteEmployee,
   createEmployee,
+  editEmployee,
   getEmployeeById,
 } from "../api/person";
 import { getJobs } from "../api/job";
@@ -150,18 +152,47 @@ const EmployeesTab = () => {
       }
 
       const newRow = data.employee;
+
       setRows((prevRows) => [...prevRows, newRow]);
       setModalOpen(false);
+      toast.success(data.message);
     } catch (error) {
       if (error.message) {
         console.error(error.message);
+        toast.error(error.message);
       } else {
         console.error("Algo ha ido mal. Vuelva a intentarlo más tarde.");
+        toast.error("Algo ha ido mal. Vuelva a intentarlo más tarde.");
       }
     }
   };
 
-  const handleEdit = async (values) => {};
+  const handleEdit = async (values) => {
+    try {
+      const data = await editEmployee(values, currentEmployee.id);
+
+      if (!data.ok) {
+        throw new Error(data.message);
+      }
+
+      const updatedRow = data.employee;
+      const updatedRows = rows.map((row) =>
+        row.id === updatedRow.id ? updatedRow : row
+      );
+
+      setRows(updatedRows);
+      setModalOpen(false);
+      toast.success(data.message);
+    } catch (error) {
+      if (error.message) {
+        console.error(error.message);
+        toast.error(error.message);
+      } else {
+        console.error("Algo ha ido mal. Vuelva a intentarlo más tarde.");
+        toast.error("Algo ha ido mal. Vuelva a intentarlo más tarde.");
+      }
+    }
+  };
 
   const handleDelete = async (id) => {
     if (id === user.id) {
@@ -171,15 +202,22 @@ const EmployeesTab = () => {
     } else {
       if (confirm("¿Está seguro?") == true) {
         try {
-          const employeeData = await deleteEmployee(id);
+          const data = await deleteEmployee(id);
 
-          if (!employeeData.ok) {
-            throw new Error(employeeData.message);
+          if (!data.ok) {
+            throw new Error(data.message);
           }
 
           setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+          toast.success(data.message);
         } catch (error) {
-          console.error(error.message);
+          if (error.message) {
+            console.error(error.message);
+            toast.error(error.message);
+          } else {
+            console.error("Algo ha ido mal. Vuelva a intentarlo más tarde.");
+            toast.error("Algo ha ido mal. Vuelva a intentarlo más tarde.");
+          }
         }
       }
     }
