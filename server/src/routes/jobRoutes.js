@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { createJob, deleteJob, getJobs } from "../controllers/jobController.js";
 
+
 const router = Router();
 
 router.get("/", getJobs);
