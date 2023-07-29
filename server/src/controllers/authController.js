@@ -101,7 +101,7 @@ export const signup = async (req, res) => {
     ]);
 
     if (query.rowCount !== 0) {
-      throw new Error("El número telefónico ya está en uso.");
+      throw new Error("El número de teléfono ya está en uso.");
     }
 
     query = await db.query(
@@ -205,7 +205,7 @@ export const signup = async (req, res) => {
       });
     }
 
-    if (error.message === "El número telefónico ya está en uso.") {
+    if (error.message === "El número de teléfono ya está en uso.") {
       return res.status(400).json({
         ok: false,
         message: error.message,

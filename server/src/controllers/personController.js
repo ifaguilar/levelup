@@ -16,20 +16,30 @@ export const createEmployee = async (req, res) => {
       password,
     } = req.body;
 
-    let query = await db.query("SELECT email FROM person WHERE email = $1", [
-      email,
-    ]);
+    let query = await db.query(
+      `SELECT person.email
+      FROM employee
+      JOIN person ON employee.person_id = person.id
+      WHERE person.email = $1 AND employee.is_active != FALSE
+      `,
+      [email]
+    );
 
     if (query.rowCount !== 0) {
       throw new Error("El correo electrónico ya está en uso.");
     }
 
-    query = await db.query("SELECT phone FROM person WHERE phone = $1", [
-      phone,
-    ]);
+    query = await db.query(
+      `SELECT person.phone
+      FROM employee
+      JOIN person ON employee.person_id = person.id
+      WHERE person.phone = $1 AND employee.is_active != FALSE
+      `,
+      [phone]
+    );
 
     if (query.rowCount !== 0) {
-      throw new Error("El número telefónico ya está en uso.");
+      throw new Error("El número de teléfono ya está en uso.");
     }
 
     query = await db.query(
@@ -127,6 +137,13 @@ export const createEmployee = async (req, res) => {
       });
     }
 
+    if (error.message === "El número de teléfono ya está en uso.") {
+      return res.status(400).json({
+        ok: false,
+        message: error.message,
+      });
+    }
+
     return res.status(500).json({
       ok: false,
       message: "Algo ha ido mal. Vuelva a intentarlo más tarde.",
@@ -170,7 +187,7 @@ export const editEmployee = async (req, res) => {
     );
 
     if (query.rowCount !== 0) {
-      throw new Error("El número telefónico ya está en uso.");
+      throw new Error("El número de teléfono ya está en uso.");
     }
 
     query = await db.query(

@@ -17,8 +17,8 @@ import { getDepartments } from "../api/department";
 import { getMunicipalitiesByDepartmentId } from "../api/municipality";
 
 // Components
-import Table from "../components/Table";
-import Button from "../components/Button";
+import Table from "./Table";
+import Button from "./Button";
 import Modal from "./Modal";
 import Input from "./Input";
 import Select from "./Select";
@@ -200,7 +200,7 @@ const EmployeesTab = () => {
         "No es posible eliminar un usuario mientras tenga una sesión activa."
       );
     } else {
-      if (confirm("¿Está seguro?") == true) {
+      if (confirm("¿Está seguro?") === true) {
         try {
           const data = await deleteEmployee(id);
 

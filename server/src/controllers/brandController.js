@@ -5,7 +5,7 @@ export const getBrands = async (req, res) => {
     const query = await db.query(`
       SELECT
         id,
-        brand_name
+        brand_name,
         created_at,
         modified_at
       FROM brand
@@ -29,12 +29,36 @@ export const getBrands = async (req, res) => {
   }
 };
 
+export const getBrandById = async (req, res) => {
+  try {
+    const query = await db.query(
+      "SELECT id, brand_name FROM brand WHERE id = $1",
+      [req.params.id]
+    );
+
+    const brand = query.rows[0];
+
+    return res.status(200).json({
+      ok: true,
+      message: "Información de marca obtenida correctamente.",
+      brand: brand,
+    });
+  } catch (error) {
+    console.error(error.message);
+
+    return res.status(500).json({
+      ok: false,
+      message: "Algo ha ido mal. Vuelva a intentarlo más tarde.",
+    });
+  }
+};
+
 export const createBrand = async (req, res) => {
   try {
     const { brandName } = req.body;
 
     let query = await db.query(
-      "SELECT brand_name FROM brand WHERE brand_name = $1",
+      "SELECT brand_name FROM brand WHERE brand_name = $1 AND is_active != FALSE",
       [brandName]
     );
 
@@ -55,7 +79,7 @@ export const createBrand = async (req, res) => {
 
     query = await db.query(
       `SELECT
-        id
+        id,
         brand_name,
         created_at,
         modified_at
@@ -114,7 +138,7 @@ export const editBrand = async (req, res) => {
 
     query = await db.query(
       `SELECT
-        id
+        id,
         brand_name,
         created_at,
         modified_at

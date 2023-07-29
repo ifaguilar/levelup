@@ -151,6 +151,13 @@ export const EMPLOYEE_TABLE_HEADERS = [
   { id: "modified_at", text: "Modificado el" },
 ];
 
+export const BRAND_TABLE_HEADERS = [
+  { id: "id", text: "ID" },
+  { id: "brand_name", text: "Nombre de la marca" },
+  { id: "created_at", text: "Creado el" },
+  { id: "modified_at", text: "Modificado el" },
+];
+
 export const DATE_TIME_OPTIONS = {
   year: "numeric",
   month: "numeric",
