@@ -15,7 +15,6 @@ import ticketRouter from "./src/routes/ticketRoutes.js";
 import teamRouter from "./src/routes/teamRoutes.js";
 import brandRouter from "./src/routes/brandRoutes.js";
 import categoryRouter from "./src/routes/categoryRoutes.js";
-import addressRouter from "./src/routes/addressRoutes.js";
 import stockRouter from "./src/routes/stockRoutes.js";
 import supplierRouter from "./src/routes/supplierRoutes.js";
 
@@ -44,7 +43,6 @@ app.use("/api/ticket", ticketRouter);
 app.use("/api/team", teamRouter);
 app.use("/api/brand", brandRouter);
 app.use("/api/category", categoryRouter);
-app.use("/api/address", addressRouter);
 app.use("/api/stock", stockRouter);
 app.use("/api/supplier", supplierRouter);
 

@@ -590,6 +590,208 @@ INSERT INTO job (
 	1
 );
 
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Ingeniero de Redes', 
+  'Responsable de diseñar, implementar y mantener la infraestructura de red de la empresa.', 
+  1
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Desarrollador de Software', 
+  'Encargado de crear y mantener aplicaciones y sistemas informáticos según las necesidades de la empresa.', 
+  1
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Especialista en Seguridad Informática', 
+  'Responsable de proteger los sistemas y datos de la empresa contra amenazas cibernéticas.', 
+  1
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Técnico de Soporte', 
+  'Brinda asistencia técnica y resuelve problemas relacionados con el hardware y software para los usuarios internos.', 
+  1
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Analista de Recursos Humanos', 
+  'Encargado de llevar a cabo el proceso de selección y reclutamiento de nuevos empleados.', 
+  2
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Especialista en Nómina', 
+  'Gestiona el cálculo y pago de salarios y beneficios para los empleados.', 
+  2
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Capacitador', 
+  'Diseña y lleva a cabo programas de capacitación y desarrollo profesional para el personal.', 
+  2
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Especialista en Relaciones Laborales', 
+  'Maneja las relaciones entre la empresa y los sindicatos, si los hubiera, y se encarga de resolver conflictos laborales.', 
+  2
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Gerente de Almacén', 
+  'Supervisa las operaciones diarias del almacén y garantiza un flujo eficiente de productos y servicios.', 
+  3
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Coordinador de Inventario', 
+  'Lleva un registro preciso del inventario y realiza auditorías periódicas.', 
+  3
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Empacador/Receptor', 
+  'Se encarga de recibir y enviar los productos y servicios, así como de empacar los pedidos para su entrega.', 
+  3
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Controlador de Calidad', 
+  'Verifica que los productos cumplan con los estándares de calidad antes de ser enviados a los clientes.', 
+  3
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Ejecutivo de Ventas', 
+  'Responsable de identificar y cerrar oportunidades de ventas con clientes potenciales.', 
+  4
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id)
+VALUES (
+  'Gerente de Cuentas', 
+  'Gestiona las relaciones con clientes existentes, asegurando su satisfacción y fidelización.', 
+  4
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Especialista en Desarrollo de Negocios', 
+  'Investiga y desarrolla nuevas oportunidades de mercado y colabora en la expansión de la empresa.', 
+  4
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Analista de Ventas', 
+  'Recopila y analiza datos de ventas para identificar tendencias y oportunidades de mejora.', 
+  4
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+)
+VALUES (
+  'Representante de Atención al Cliente', 
+  'Responde a las consultas y problemas de los clientes, brindando un excelente servicio.', 
+  5
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Especialista en Soporte Técnico', 
+  'Ofrece asistencia técnica para resolver problemas técnicos o de productos/servicios.', 
+  5
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+) VALUES (
+  'Coordinador de Retención de Clientes', 
+  'Implementa estrategias para mantener y fidelizar a los clientes existentes.', 
+  5
+);
+
+INSERT INTO job (
+  job_title, 
+  job_description, 
+  team_id
+)
+VALUES (
+  'Encuestador de Satisfacción del Cliente', 
+  'Realiza encuestas y análisis de satisfacción para mejorar la calidad del servicio al cliente.', 
+  5
+);
+
 -- Address
 INSERT INTO address (address_description, municipality_id) VALUES ('Ciudad Universitaria', 110);
 
@@ -653,4 +855,53 @@ INSERT INTO employee (
   'https://ui-avatars.com/api/?name=Jane+Doe&background=random&size=128',
   2,
   1
+);
+
+-- Brand
+INSERT INTO brand (
+  brand_name
+) VALUES (
+  'Logitech'
+);
+
+INSERT INTO brand (
+  brand_name
+) VALUES (
+  'Nvidia'
+);
+
+INSERT INTO brand (
+  brand_name
+) VALUES (
+  'AMD'
+);
+
+INSERT INTO brand (
+  brand_name
+) VALUES (
+  'Intel'
+);
+
+INSERT INTO brand (
+  brand_name
+) VALUES (
+  'HyperX'
+);
+
+INSERT INTO brand (
+  brand_name
+) VALUES (
+  'Corsair'
+);
+
+INSERT INTO brand (
+  brand_name
+) VALUES (
+  'Gigabyte'
+);
+
+INSERT INTO brand (
+  brand_name
+) VALUES (
+  'Razer'
 );

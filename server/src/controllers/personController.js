@@ -241,7 +241,7 @@ export const editEmployee = async (req, res) => {
 
     const employee = query.rows[0];
 
-    return res.status(201).json({
+    return res.status(200).json({
       ok: true,
       message: "Empleado editado correctamente.",
       employee: employee,
