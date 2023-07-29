@@ -1,7 +1,15 @@
 import { Router } from "express";
-import { countProducts } from "../controllers/productController.js";
+import {
+  countProducts,
+  createProduct,
+  deleteProduct,
+} from "../controllers/productController.js";
 
 const router = Router();
+
+router.post("/", createProduct);
+
+router.delete("/:id", deleteProduct);
 
 router.get("/count", countProducts);
 

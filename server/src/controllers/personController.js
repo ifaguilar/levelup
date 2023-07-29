@@ -137,7 +137,6 @@ export const createEmployee = async (req, res) => {
 export const editEmployee = async (req, res) => {
   try {
     const id = req.params.id;
-
     const {
       firstName,
       lastName,
