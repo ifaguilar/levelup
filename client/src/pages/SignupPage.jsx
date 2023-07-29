@@ -1,14 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link, useNavigate, Navigate, useLoaderData } from "react-router-dom";
 
 // API
 import { signup } from "../api/auth";
+import { getMunicipalitiesByDepartmentId } from "../api/municipality";
 
 // Components
 import Logo from "../components/Logo";
 import Input from "../components/Input";
 import Button from "../components/Button";
+import Select from "../components/Select";
+
+// Constants
+import { SIGNUP_FORM_STEPS } from "../constants/constants";
 
 // Context
 import { AuthContext } from "../context/AuthProvider";
@@ -16,8 +21,11 @@ import { AuthContext } from "../context/AuthProvider";
 // Helpers
 import { signupSchema } from "../helpers/validationSchema";
 
-const LoginPage = () => {
+const SignupPage = () => {
   const { isAuthenticated, loginUser } = useContext(AuthContext);
+  const { jobs, genders, departments } = useLoaderData();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [municipalities, setMunicipalities] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
@@ -39,6 +47,25 @@ const LoginPage = () => {
     }
   };
 
+  const handleNextStep = () => {
+    setCurrentStep((prev) => prev + 1);
+  };
+
+  const handlePrevStep = () => {
+    setCurrentStep((prev) => prev - 1);
+  };
+
+  const handleDepartmentChange = async (event) => {
+    if (event.target.value !== "") {
+      const municipalityData = await getMunicipalitiesByDepartmentId(
+        event.target.value
+      );
+      setMunicipalities(municipalityData.municipalities);
+    } else {
+      setMunicipalities([]);
+    }
+  };
+
   if (isAuthenticated) {
     return (
       <div className="relative min-h-screen bg-white">
@@ -56,139 +83,159 @@ const LoginPage = () => {
           initialValues={{
             firstName: "",
             lastName: "",
+            job: "",
             phone: "",
+            birthdate: "",
+            gender: "",
+            department: "",
+            municipality: "",
+            address: "",
             email: "",
             password: "",
-            comfirmPassword: "",
+            confirmPassword: "",
           }}
           validationSchema={signupSchema}
           onSubmit={handleSubmit}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, handleChange }) => (
             <Form className="flex flex-col w-full max-w-xs gap-8">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="firstName">Nombre</label>
+              <div className="flex overflow-hidden">
+                {SIGNUP_FORM_STEPS.map((step, index) => (
+                  <div
+                    key={index}
+                    className={`flex flex-col min-w-full gap-8 basis-full transition ${
+                      currentStep === 4
+                        ? "-translate-x-[400%]"
+                        : currentStep === 3
+                        ? "-translate-x-[300%]"
+                        : currentStep === 2
+                        ? "-translate-x-[200%]"
+                        : currentStep === 1
+                        ? "-translate-x-[100%]"
+                        : "-translate-x-0"
+                    }`}
+                  >
+                    <h5>{`${index + 1}. ${step.title}`}</h5>
+                    {step.fields.map((stepField, index) => (
+                      <div key={index} className="flex flex-col gap-2">
+                        <label htmlFor={stepField.name}>
+                          {stepField.label}
+                        </label>
 
-                <Field name="firstName">
-                  {({ field, meta }) => (
-                    <Input
-                      touched={meta.touched ? meta.touched : false}
-                      error={meta.error ? meta.error : ""}
-                      type="text"
-                      placeholder="Ingrese su nombre..."
-                      {...field}
-                    />
-                  )}
-                </Field>
+                        <Field name={stepField.name}>
+                          {({ field, meta }) =>
+                            stepField.type === "select" ? (
+                              <Select
+                                touched={meta.touched ? meta.touched : false}
+                                error={meta.error ? meta.error : ""}
+                                {...field}
+                                onChange={(event) => {
+                                  handleChange(event);
+                                  stepField.name === "department"
+                                    ? handleDepartmentChange(event)
+                                    : null;
+                                }}
+                                disabled={
+                                  stepField.name === "municipality" &&
+                                  municipalities.length === 0
+                                    ? true
+                                    : false
+                                }
+                              >
+                                <option value="">
+                                  {stepField.placeholder}
+                                </option>
+                                {stepField.name === "job"
+                                  ? jobs.map((job) => (
+                                      <option key={job.id} value={job.id}>
+                                        {job.job_title}
+                                      </option>
+                                    ))
+                                  : stepField.name === "gender"
+                                  ? genders.map((gender) => (
+                                      <option key={gender.id} value={gender.id}>
+                                        {gender.gender_name}
+                                      </option>
+                                    ))
+                                  : stepField.name === "department"
+                                  ? departments.map((departments) => (
+                                      <option
+                                        key={departments.id}
+                                        value={departments.id}
+                                      >
+                                        {departments.department_name}
+                                      </option>
+                                    ))
+                                  : stepField.name === "municipality"
+                                  ? municipalities.map((municipality) => (
+                                      <option
+                                        key={municipality.id}
+                                        value={municipality.id}
+                                      >
+                                        {municipality.municipality_name}
+                                      </option>
+                                    ))
+                                  : null}
+                              </Select>
+                            ) : (
+                              <Input
+                                touched={meta.touched ? meta.touched : false}
+                                error={meta.error ? meta.error : ""}
+                                type={stepField.type}
+                                placeholder={stepField.placeholder}
+                                {...field}
+                              />
+                            )
+                          }
+                        </Field>
 
-                <ErrorMessage name="firstName">
-                  {(message) => <span className="text-red-600">{message}</span>}
-                </ErrorMessage>
+                        <ErrorMessage name={stepField.name}>
+                          {(message) => (
+                            <span className="text-red-600">{message}</span>
+                          )}
+                        </ErrorMessage>
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
 
-              <div className="flex flex-col gap-2">
-                <label htmlFor="lastName">Apellido</label>
-
-                <Field name="lastName">
-                  {({ field, meta }) => (
-                    <Input
-                      touched={meta.touched ? meta.touched : false}
-                      error={meta.error ? meta.error : ""}
-                      type="text"
-                      placeholder="Ingrese su apellido..."
-                      {...field}
-                    />
-                  )}
-                </Field>
-
-                <ErrorMessage name="lastName">
-                  {(message) => <span className="text-red-600">{message}</span>}
-                </ErrorMessage>
+              <div className="flex justify-between">
+                <Button
+                  variant="secondary"
+                  onClick={handlePrevStep}
+                  className={
+                    currentStep === 0
+                      ? "opacity-0 pointer-events-none"
+                      : "opacity-100"
+                  }
+                >
+                  Regresar
+                </Button>
+                <Button
+                  variant="primary"
+                  onClick={handleNextStep}
+                  className={
+                    currentStep === SIGNUP_FORM_STEPS.length - 1
+                      ? "hidden"
+                      : "block"
+                  }
+                >
+                  Siguiente
+                </Button>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={
+                    currentStep === SIGNUP_FORM_STEPS.length - 1
+                      ? "block"
+                      : "hidden"
+                  }
+                >
+                  Registrarse
+                </Button>
               </div>
-
-              <div className="flex flex-col gap-2">
-                <label htmlFor="phone">Teléfono</label>
-
-                <Field name="phone">
-                  {({ field, meta }) => (
-                    <Input
-                      touched={meta.touched ? meta.touched : false}
-                      error={meta.error ? meta.error : ""}
-                      type="phone"
-                      placeholder="Ingrese su teléfono..."
-                      {...field}
-                    />
-                  )}
-                </Field>
-
-                <ErrorMessage name="phone">
-                  {(message) => <span className="text-red-600">{message}</span>}
-                </ErrorMessage>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label htmlFor="email">Correo electrónico</label>
-
-                <Field name="email">
-                  {({ field, meta }) => (
-                    <Input
-                      touched={meta.touched ? meta.touched : false}
-                      error={meta.error ? meta.error : ""}
-                      type="email"
-                      placeholder="Ingrese su correo electrónico..."
-                      {...field}
-                    />
-                  )}
-                </Field>
-
-                <ErrorMessage name="email">
-                  {(message) => <span className="text-red-600">{message}</span>}
-                </ErrorMessage>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label htmlFor="password">Contraseña</label>
-
-                <Field name="password">
-                  {({ field, meta }) => (
-                    <Input
-                      touched={meta.touched ? meta.touched : false}
-                      error={meta.error ? meta.error : ""}
-                      type="password"
-                      placeholder="Ingrese su contraseña..."
-                      {...field}
-                    />
-                  )}
-                </Field>
-
-                <ErrorMessage name="password">
-                  {(message) => <span className="text-red-600">{message}</span>}
-                </ErrorMessage>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label htmlFor="confirmPassword">Confirmar contraseña</label>
-
-                <Field name="confirmPassword">
-                  {({ field, meta }) => (
-                    <Input
-                      touched={meta.touched ? meta.touched : false}
-                      error={meta.error ? meta.error : ""}
-                      type="password"
-                      placeholder="Confirme su contraseña..."
-                      {...field}
-                    />
-                  )}
-                </Field>
-
-                <ErrorMessage name="confirmPassword">
-                  {(message) => <span className="text-red-600">{message}</span>}
-                </ErrorMessage>
-              </div>
-
-              <Button variant="primary" type="submit" disabled={isSubmitting}>
-                Registrarse
-              </Button>
             </Form>
           )}
         </Formik>
@@ -203,4 +250,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

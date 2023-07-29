@@ -9,15 +9,26 @@ import "./main.css";
 import { AuthProvider } from "./context/AuthProvider";
 
 // Loaders
-import homeLoader from "./loaders/homeLoader";
-import warehouseLoader from "./loaders/warehouseLoader";
+import dashboardLoader from "./loaders/dashboardLoader";
+import hrLoader from "./loaders/hrLoader";
+import inventoryLoader from "./loaders/inventoryLoader";
+import salesLoader from "./loaders/salesLoader";
+import supportLoader from "./loaders/supportLoader";
+import analyticsLoader from "./loaders/analyticsLoader";
+import profileLoader from "./loaders/profileLoader";
+import signupLoader from "./loaders/signupLoader";
 
 // Pages
-import HomePage from "./pages/HomePage";
+import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ErrorPage from "./pages/ErrorPage";
-import WarehousePage from "./pages/WarehousePage";
+import HRPage from "./pages/HRPage";
+import InventoryPage from "./pages/InventoryPage";
+import SalesPage from "./pages/SalesPage";
+import SupportPage from "./pages/SupportPage";
+import AnalyticsPage from "./pages/AnalyticsPage";
+import ProfilePage from "./pages/ProfilePage";
 
 const router = createBrowserRouter([
   {
@@ -27,13 +38,38 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />,
-        loader: homeLoader,
+        element: <DashboardPage />,
+        loader: dashboardLoader,
       },
       {
-        path: "/warehouse",
-        element: <WarehousePage />,
-        loader: warehouseLoader,
+        path: "/hr",
+        element: <HRPage />,
+        loader: hrLoader,
+      },
+      {
+        path: "/inventory",
+        element: <InventoryPage />,
+        loader: inventoryLoader,
+      },
+      {
+        path: "/sales",
+        element: <SalesPage />,
+        loader: salesLoader,
+      },
+      {
+        path: "/support",
+        element: <SupportPage />,
+        loader: supportLoader,
+      },
+      {
+        path: "/analytics",
+        element: <AnalyticsPage />,
+        loader: analyticsLoader,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
+        loader: profileLoader,
       },
     ],
   },
@@ -45,6 +81,7 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignupPage />,
+    loader: signupLoader,
     errorElement: <ErrorPage />,
   },
 ]);

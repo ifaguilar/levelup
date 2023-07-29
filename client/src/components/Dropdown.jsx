@@ -24,10 +24,15 @@ const Dropdown = ({ dropdownOpen, setDropdownOpen }) => {
       } fixed top-16 right-4 w-64 z-50 py-4 shadow-lg rounded-lg bg-white`}
     >
       <div className="flex items-center gap-4 p-4">
-        <ProfilePic src={user?.profile_pic_url} />
+        <ProfilePic src={user?.profile_pic_url} className="flex-shrink-0" />
         <div className="flex flex-col overflow-hidden">
-          <p className="text-medium">{`${user?.first_name} ${user?.last_name}`}</p>
-          <span>{user?.email}</span>
+          <p
+            className="truncate text-medium"
+            title={`${user?.first_name} ${user?.last_name}`}
+          >{`${user?.first_name} ${user?.last_name}`}</p>
+          <span className="truncate" title={user?.email}>
+            {user?.email}
+          </span>
         </div>
       </div>
       <Divider />
