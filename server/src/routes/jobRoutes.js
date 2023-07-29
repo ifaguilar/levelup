@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/", getJobs);
 router.post("/", createJob);
-router.delete("/:id",deleteJob);
 
+router.delete("/:id", deleteJob);
 
 export default router;

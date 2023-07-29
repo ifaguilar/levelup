@@ -33,6 +33,12 @@ export const signupSchema = [
     .notEmpty()
     .withMessage("Por favor, ingrese su número de teléfono."),
 
+  body("address")
+    .isLength({ min: 3 })
+    .withMessage("Ingrese una dirección con al menos 3 caracteres.")
+    .notEmpty()
+    .withMessage("Por favor, ingrese su dirección."),
+
   body("email")
     .isEmail()
     .withMessage("Por favor, ingrese un correo electrónico válido.")

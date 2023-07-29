@@ -23,14 +23,9 @@ export const countProducts = async (req, res) => {
 
 export const createProduct = async (req, res) => {
   try {
-    const {
-      productName,
-      productDescription,
-      price,
-      category,
-      brand,
-    } = req.body;
-    
+    const { productName, productDescription, price, category, brand } =
+      req.body;
+
     let query = await db.query(
       `INSERT INTO product (
         product_name,
@@ -45,16 +40,10 @@ export const createProduct = async (req, res) => {
         $4,
         $5
       ) RETURNING id`,
-      [
-        productName,
-        productDescription,
-        price,
-        category,
-        parseInt(brand),
-      ]
+      [productName, productDescription, price, category, parseInt(brand)]
     );
 
-    const productId = query.rows[0].id
+    const productId = query.rows[0].id;
 
     query = await db.query(
       `SELECT

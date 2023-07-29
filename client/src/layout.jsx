@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import { Outlet, ScrollRestoration, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Components
 import Navbar from "./components/Navbar";
@@ -60,6 +62,7 @@ const Layout = () => {
       <Outlet context={[modalOpen, setModalOpen]} />
       <Footer />
       <ScrollRestoration />
+      <ToastContainer position="bottom-right" />
     </div>
   );
 };

@@ -12,13 +12,12 @@ import productRouter from "./src/routes/productRoutes.js";
 import personRouter from "./src/routes/personRoutes.js";
 import salesOrderRouter from "./src/routes/salesOrderRoutes.js";
 import ticketRouter from "./src/routes/ticketRoutes.js";
-
-import teamRoutes from "./src/routes/teamRoutes.js";
-import brandRoutes from "./src/routes/brandRoutes.js";
-import categoryRoutes from "./src/routes/categoryRoutes.js";
-import addressRoutes from "./src/routes/addressRoutes.js";
+import teamRouter from "./src/routes/teamRoutes.js";
+import brandRouter from "./src/routes/brandRoutes.js";
+import categoryRouter from "./src/routes/categoryRoutes.js";
+import addressRouter from "./src/routes/addressRoutes.js";
 import stockRouter from "./src/routes/stockRoutes.js";
-import supplierRoute from "./src/routes/supplierRoutes.js";
+import supplierRouter from "./src/routes/supplierRoutes.js";
 
 // Functions
 dotenv.config();
@@ -42,13 +41,12 @@ app.use("/api/product", productRouter);
 app.use("/api/person", personRouter);
 app.use("/api/sales_order", salesOrderRouter);
 app.use("/api/ticket", ticketRouter);
-
-app.use("/api/team",teamRoutes);
-app.use("/api/brand",brandRoutes);
-app.use("/api/category",categoryRoutes);
-app.use("/api/address",addressRoutes);
-app.use("/api/stock",stockRouter);
-app.use("/api/supplier",supplierRoute);
+app.use("/api/team", teamRouter);
+app.use("/api/brand", brandRouter);
+app.use("/api/category", categoryRouter);
+app.use("/api/address", addressRouter);
+app.use("/api/stock", stockRouter);
+app.use("/api/supplier", supplierRouter);
 
 // Initialization
 app.listen(PORT, () => console.log(`Server started on port ${PORT}.`));

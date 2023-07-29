@@ -32,16 +32,10 @@ export const getJobs = async (req, res) => {
   }
 };
 
-
-//********************  CREATE JOB **************/
 export const createJob = async (req, res) => {
   try {
-    const {
-      jobTitle,
-      jobDescription,
-      team,
-    } = req.body;
-    
+    const { jobTitle, jobDescription, team } = req.body;
+
     let query = await db.query(
       `INSERT INTO job (
         job_title,
@@ -52,14 +46,10 @@ export const createJob = async (req, res) => {
         $2,
         $3
       ) RETURNING id`,
-      [
-        jobTitle,
-        jobDescription,
-        parseInt(team),
-      ]
+      [jobTitle, jobDescription, parseInt(team)]
     );
 
-    const jobId = query.rows[0].id
+    const jobId = query.rows[0].id;
 
     query = await db.query(
       `SELECT
@@ -92,8 +82,6 @@ export const createJob = async (req, res) => {
   }
 };
 
-
-/******* DELETE JOB */
 export const deleteJob = async (req, res) => {
   try {
     const id = req.params.id;

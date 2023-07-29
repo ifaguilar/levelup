@@ -7,6 +7,7 @@ import {
 const router = Router();
 
 router.get("/", getMunicipalities);
+
 router.get("/department/:id", getMunicipalitiesByDepartmentId);
 
 export default router;
