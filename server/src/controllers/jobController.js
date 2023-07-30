@@ -140,7 +140,7 @@ export const editJob = async (req, res) => {
     const { jobTitle, jobDescription, teamId } = req.body;
 
     let query = await db.query(
-      "SELECT job_title FROM job WHERE  job_title = $1 AND id != $2",
+      "SELECT job_title FROM job WHERE job_title = $1 AND id != $2 AND is_active != FALSE",
       [jobTitle, jobId]
     );
 

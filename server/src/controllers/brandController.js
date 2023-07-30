@@ -59,7 +59,7 @@ export const createBrand = async (req, res) => {
     const { brandName } = req.body;
 
     let query = await db.query(
-      "SELECT brand_name FROM brand WHERE brand_name = $1 AND is_active != FALSE",
+      "SELECT brand_name FROM brand WHERE brand_name = $1 AND is_active != FALSE AND is_active != FALSE",
       [brandName]
     );
 
@@ -119,7 +119,7 @@ export const editBrand = async (req, res) => {
     const { brandName } = req.body;
 
     let query = await db.query(
-      "SELECT brand_name FROM brand WHERE brand_name = $1 AND id != $2",
+      "SELECT brand_name FROM brand WHERE brand_name = $1 AND id != $2 AND is_active != FALSE",
       [brandName, brandId]
     );
 

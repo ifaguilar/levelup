@@ -238,7 +238,7 @@ export const editEmployee = async (req, res) => {
     const personId = query.rows[0].person_id;
 
     query = await db.query(
-      "SELECT email FROM person WHERE email = $1 AND id != $2",
+      "SELECT email FROM person WHERE email = $1 AND id != $2 AND is_active != FALSE",
       [email, personId]
     );
 
@@ -247,7 +247,7 @@ export const editEmployee = async (req, res) => {
     }
 
     query = await db.query(
-      "SELECT phone FROM person WHERE phone = $1 AND id != $2",
+      "SELECT phone FROM person WHERE phone = $1 AND id != $2 AND is_active != FALSE",
       [phone, personId]
     );
 
@@ -349,7 +349,7 @@ export const deleteEmployee = async (req, res) => {
   try {
     const employeeId = req.params.id;
     const query = await db.query(
-      "UPDATE employee SET is_active = FALSE WHERE id = $1;",
+      "UPDATE employee SET is_active = FALSE WHERE id = $1",
       [employeeId]
     );
 

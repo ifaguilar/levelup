@@ -121,7 +121,7 @@ export const editTeam = async (req, res) => {
     const { teamName, teamDescription } = req.body;
 
     let query = await db.query(
-      "SELECT team_name FROM team WHERE team_name = $1 AND id != $2",
+      "SELECT team_name FROM team WHERE team_name = $1 AND id != $2 AND is_active != FALSE",
       [teamName, teamId]
     );
 
