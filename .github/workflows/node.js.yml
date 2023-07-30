@@ -26,6 +26,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        
+    - name: Set up the working directory
+      run: cd ./client
+      shell: bash
+      
     - run: npm i
     - run: npm run build --if-present
     - run: npm test
