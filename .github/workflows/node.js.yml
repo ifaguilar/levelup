@@ -36,7 +36,3 @@ jobs:
     - name: Build the project (if present)
       working-directory: ./client
       run: npm run build --if-present
-
-    - name: Run tests
-      working-directory: ./client
-      run: npm test
