@@ -31,9 +31,10 @@ export const getBrands = async (req, res) => {
 
 export const getBrandById = async (req, res) => {
   try {
+    const brandId = req.params.id;
     const query = await db.query(
       "SELECT id, brand_name FROM brand WHERE id = $1",
-      [req.params.id]
+      [brandId]
     );
 
     const brand = query.rows[0];
@@ -63,7 +64,7 @@ export const createBrand = async (req, res) => {
     );
 
     if (query.rowCount !== 0) {
-      throw new Error("La marca ya existe en la base de datos.");
+      throw new Error("El nombre de la marca ya está en uso.");
     }
 
     query = await db.query(
@@ -98,7 +99,7 @@ export const createBrand = async (req, res) => {
   } catch (error) {
     console.error(error.message);
 
-    if (error.message === "La marca ya existe en la base de datos.") {
+    if (error.message === "El nombre de la marca ya está en uso.") {
       return res.status(400).json({
         ok: false,
         message: error.message,
@@ -114,16 +115,16 @@ export const createBrand = async (req, res) => {
 
 export const editBrand = async (req, res) => {
   try {
-    const id = req.params.id;
+    const brandId = req.params.id;
     const { brandName } = req.body;
 
     let query = await db.query(
       "SELECT brand_name FROM brand WHERE brand_name = $1 AND id != $2",
-      [brandName, id]
+      [brandName, brandId]
     );
 
     if (query.rowCount !== 0) {
-      throw new Error("La marca ya existe en la base de datos.");
+      throw new Error("El nombre de la marca ya está en uso.");
     }
 
     query = await db.query(
@@ -133,7 +134,7 @@ export const editBrand = async (req, res) => {
         brand_name = $1,
         modified_at = NOW()
       WHERE id = $2`,
-      [brandName, id]
+      [brandName, brandId]
     );
 
     query = await db.query(
@@ -144,7 +145,7 @@ export const editBrand = async (req, res) => {
         modified_at
       FROM brand
       WHERE id = $1`,
-      [id]
+      [brandId]
     );
 
     const brand = query.rows[0];
@@ -157,7 +158,7 @@ export const editBrand = async (req, res) => {
   } catch (error) {
     console.error(error.message);
 
-    if (error.message === "La marca ya existe en la base de datos.") {
+    if (error.message === "El nombre de la marca ya está en uso.") {
       return res.status(400).json({
         ok: false,
         message: error.message,
@@ -173,38 +174,15 @@ export const editBrand = async (req, res) => {
 
 export const deleteBrand = async (req, res) => {
   try {
-    const id = req.params.id;
+    const brandId = req.params.id;
     const query = await db.query(
       "UPDATE brand SET is_active = FALSE WHERE id = $1;",
-      [id]
+      [brandId]
     );
 
     return res.status(200).json({
       ok: true,
       message: "Marca eliminada correctamente.",
-    });
-  } catch (error) {
-    console.error(error.message);
-
-    return res.status(500).json({
-      ok: false,
-      message: "Algo ha ido mal. Vuelva a intentarlo más tarde.",
-    });
-  }
-};
-
-export const countBrands = async (req, res) => {
-  try {
-    const query = await db.query(
-      "SELECT COUNT(*) FROM brand WHERE is_active = TRUE"
-    );
-
-    const brandCount = parseInt(query.rows[0].count);
-
-    return res.status(200).json({
-      ok: true,
-      message: "Cantidad de marcas obtenida correctamente.",
-      brandCount: brandCount,
     });
   } catch (error) {
     console.error(error.message);

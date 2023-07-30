@@ -1,4 +1,4 @@
-export const brands = async () => {
+export const getBrands = async () => {
   const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}api/brand`);
   const data = await response.json();
 
@@ -50,15 +50,6 @@ export const deleteBrand = async (id) => {
     {
       method: "DELETE",
     }
-  );
-  const data = await response.json();
-
-  return data;
-};
-
-export const countBrands = async () => {
-  const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/brands/count`
   );
   const data = await response.json();
 

@@ -94,12 +94,12 @@ const SignupPage = () => {
             initialValues={{
               firstName: "",
               lastName: "",
-              job: "",
+              jobId: "",
               phone: "",
               birthdate: "",
-              gender: "",
-              department: "",
-              municipality: "",
+              genderId: "",
+              departmentId: "",
+              municipalityId: "",
               address: "",
               email: "",
               password: "",
@@ -142,12 +142,12 @@ const SignupPage = () => {
                                   {...field}
                                   onChange={(event) => {
                                     handleChange(event);
-                                    stepField.name === "department"
+                                    stepField.name === "departmentId"
                                       ? handleDepartmentChange(event)
                                       : null;
                                   }}
                                   disabled={
-                                    stepField.name === "municipality" &&
+                                    stepField.name === "municipalityId" &&
                                     municipalities.length === 0
                                       ? true
                                       : false
@@ -156,13 +156,13 @@ const SignupPage = () => {
                                   <option value="">
                                     {stepField.placeholder}
                                   </option>
-                                  {stepField.name === "job"
+                                  {stepField.name === "jobId"
                                     ? jobs.map((job) => (
                                         <option key={job.id} value={job.id}>
                                           {job.job_title}
                                         </option>
                                       ))
-                                    : stepField.name === "gender"
+                                    : stepField.name === "genderId"
                                     ? genders.map((gender) => (
                                         <option
                                           key={gender.id}
@@ -171,7 +171,7 @@ const SignupPage = () => {
                                           {gender.gender_name}
                                         </option>
                                       ))
-                                    : stepField.name === "department"
+                                    : stepField.name === "departmentId"
                                     ? departments.map((departments) => (
                                         <option
                                           key={departments.id}
@@ -180,7 +180,7 @@ const SignupPage = () => {
                                           {departments.department_name}
                                         </option>
                                       ))
-                                    : stepField.name === "municipality"
+                                    : stepField.name === "municipalityId"
                                     ? municipalities.map((municipality) => (
                                         <option
                                           key={municipality.id}

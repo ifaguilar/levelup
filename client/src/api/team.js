@@ -1,21 +1,21 @@
-export const getJobs = async () => {
-  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}api/job`);
+export const getTeams = async () => {
+  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}api/team`);
   const data = await response.json();
 
   return data;
 };
 
-export const getJobById = async (id) => {
+export const getTeamById = async (id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/job/${id}`
+    `${import.meta.env.VITE_API_BASE_URL}api/team/${id}`
   );
   const data = await response.json();
 
   return data;
 };
 
-export const createJob = async (values) => {
-  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}api/job`, {
+export const createTeam = async (values) => {
+  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}api/team`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -27,9 +27,9 @@ export const createJob = async (values) => {
   return data;
 };
 
-export const editJob = async (values, id) => {
+export const editTeam = async (values, id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/job/${id}`,
+    `${import.meta.env.VITE_API_BASE_URL}api/team/${id}`,
     {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -41,9 +41,9 @@ export const editJob = async (values, id) => {
   return data;
 };
 
-export const deleteJob = async (id) => {
+export const deleteTeam = async (id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/job/${id}`,
+    `${import.meta.env.VITE_API_BASE_URL}api/team/${id}`,
     {
       method: "DELETE",
     }

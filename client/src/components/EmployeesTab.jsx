@@ -5,12 +5,12 @@ import { toast } from "react-toastify";
 
 // API
 import {
-  employees,
-  deleteEmployee,
+  getEmployees,
+  getEmployeeById,
   createEmployee,
   editEmployee,
-  getEmployeeById,
-} from "../api/person";
+  deleteEmployee,
+} from "../api/employee";
 import { getJobs } from "../api/job";
 import { getGenders } from "../api/gender";
 import { getDepartments } from "../api/department";
@@ -49,13 +49,13 @@ const EmployeesTab = () => {
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
-        const employeeData = await employees();
+        const data = await getEmployees();
 
-        if (!employeeData.ok) {
-          throw new Error(employeeData.message);
+        if (!data.ok) {
+          throw new Error(data.message);
         }
 
-        setRows(employeeData.employees);
+        setRows(data.employees);
       } catch (error) {
         console.error(error.message);
       }
@@ -63,13 +63,13 @@ const EmployeesTab = () => {
 
     const fetchJobData = async () => {
       try {
-        const jobData = await getJobs();
+        const data = await getJobs();
 
-        if (!jobData.ok) {
-          throw new Error(jobData.message);
+        if (!data.ok) {
+          throw new Error(data.message);
         }
 
-        setJobs(jobData.jobs);
+        setJobs(data.jobs);
       } catch (error) {
         console.error(error.message);
       }
@@ -77,13 +77,13 @@ const EmployeesTab = () => {
 
     const fetchGenderData = async () => {
       try {
-        const genderData = await getGenders();
+        const data = await getGenders();
 
-        if (!genderData.ok) {
-          throw new Error(genderData.message);
+        if (!data.ok) {
+          throw new Error(data.message);
         }
 
-        setGenders(genderData.genders);
+        setGenders(data.genders);
       } catch (error) {
         console.error(error.message);
       }
@@ -91,13 +91,13 @@ const EmployeesTab = () => {
 
     const fetchDeparmentData = async () => {
       try {
-        const departmentData = await getDepartments();
+        const data = await getDepartments();
 
-        if (!departmentData.ok) {
-          throw new Error(departmentData.message);
+        if (!data.ok) {
+          throw new Error(data.message);
         }
 
-        setDepartments(departmentData.departments);
+        setDepartments(data.departments);
       } catch (error) {
         console.error(error.message);
       }
@@ -225,10 +225,9 @@ const EmployeesTab = () => {
 
   const handleDepartmentChange = async (event) => {
     if (event.target.value !== "") {
-      const municipalityData = await getMunicipalitiesByDepartmentId(
-        event.target.value
-      );
-      setMunicipalities(municipalityData.municipalities);
+      const data = await getMunicipalitiesByDepartmentId(event.target.value);
+
+      setMunicipalities(data.municipalities);
     } else {
       setMunicipalities([]);
     }
@@ -257,14 +256,14 @@ const EmployeesTab = () => {
             initialValues={{
               firstName: currentEmployee?.first_name,
               lastName: currentEmployee?.last_name,
-              job: currentEmployee?.job_id,
+              jobId: currentEmployee?.job_id,
               phone: currentEmployee?.phone,
               birthdate: new Date(currentEmployee?.birthdate)
                 .toISOString()
                 .slice(0, 10),
-              gender: currentEmployee?.gender_id,
-              department: currentEmployee?.department_id,
-              municipality: currentEmployee?.municipality_id,
+              genderId: currentEmployee?.gender_id,
+              departmentId: currentEmployee?.department_id,
+              municipalityId: currentEmployee?.municipality_id,
               address: currentEmployee?.address_description,
               email: currentEmployee?.email,
             }}
@@ -321,9 +320,9 @@ const EmployeesTab = () => {
 
                 <div className="grid grid-rows-2 gap-12 md:grid-rows-1 md:grid-cols-2">
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="job">Trabajo</label>
+                    <label htmlFor="jobId">Trabajo</label>
 
-                    <Field name="job">
+                    <Field name="jobId">
                       {({ field, meta }) => (
                         <Select
                           touched={meta.touched ? meta.touched : false}
@@ -340,7 +339,7 @@ const EmployeesTab = () => {
                       )}
                     </Field>
 
-                    <ErrorMessage name="job">
+                    <ErrorMessage name="jobId">
                       {(message) => (
                         <span className="text-red-600">{message}</span>
                       )}
@@ -394,9 +393,9 @@ const EmployeesTab = () => {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="gender">Género</label>
+                    <label htmlFor="genderId">Género</label>
 
-                    <Field name="gender">
+                    <Field name="genderId">
                       {({ field, meta }) => (
                         <Select
                           touched={meta.touched ? meta.touched : false}
@@ -413,7 +412,7 @@ const EmployeesTab = () => {
                       )}
                     </Field>
 
-                    <ErrorMessage name="gender">
+                    <ErrorMessage name="genderId">
                       {(message) => (
                         <span className="text-red-600">{message}</span>
                       )}
@@ -423,9 +422,9 @@ const EmployeesTab = () => {
 
                 <div className="grid grid-rows-2 gap-12 md:grid-rows-1 md:grid-cols-2">
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="department">Departamento</label>
+                    <label htmlFor="departmentId">Departamento</label>
 
-                    <Field name="department">
+                    <Field name="departmentId">
                       {({ field, meta }) => (
                         <Select
                           touched={meta.touched ? meta.touched : false}
@@ -448,7 +447,7 @@ const EmployeesTab = () => {
                       )}
                     </Field>
 
-                    <ErrorMessage name="department">
+                    <ErrorMessage name="departmentId">
                       {(message) => (
                         <span className="text-red-600">{message}</span>
                       )}
@@ -456,9 +455,9 @@ const EmployeesTab = () => {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="municipality">Municipio</label>
+                    <label htmlFor="municipalityId">Municipio</label>
 
-                    <Field name="municipality">
+                    <Field name="municipalityId">
                       {({ field, meta }) => (
                         <Select
                           touched={meta.touched ? meta.touched : false}
@@ -478,7 +477,7 @@ const EmployeesTab = () => {
                       )}
                     </Field>
 
-                    <ErrorMessage name="municipality">
+                    <ErrorMessage name="municipalityId">
                       {(message) => (
                         <span className="text-red-600">{message}</span>
                       )}
@@ -557,12 +556,12 @@ const EmployeesTab = () => {
             initialValues={{
               firstName: "",
               lastName: "",
-              job: "",
+              jobId: "",
               phone: "",
               birthdate: "",
-              gender: "",
-              department: "",
-              municipality: "",
+              genderId: "",
+              departmentId: "",
+              municipalityId: "",
               address: "",
               email: "",
               password: "",
@@ -621,9 +620,9 @@ const EmployeesTab = () => {
 
                 <div className="grid grid-rows-2 gap-12 md:grid-rows-1 md:grid-cols-2">
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="job">Trabajo</label>
+                    <label htmlFor="jobId">Trabajo</label>
 
-                    <Field name="job">
+                    <Field name="jobId">
                       {({ field, meta }) => (
                         <Select
                           touched={meta.touched ? meta.touched : false}
@@ -640,7 +639,7 @@ const EmployeesTab = () => {
                       )}
                     </Field>
 
-                    <ErrorMessage name="job">
+                    <ErrorMessage name="jobId">
                       {(message) => (
                         <span className="text-red-600">{message}</span>
                       )}
@@ -694,9 +693,9 @@ const EmployeesTab = () => {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="gender">Género</label>
+                    <label htmlFor="genderId">Género</label>
 
-                    <Field name="gender">
+                    <Field name="genderId">
                       {({ field, meta }) => (
                         <Select
                           touched={meta.touched ? meta.touched : false}
@@ -713,7 +712,7 @@ const EmployeesTab = () => {
                       )}
                     </Field>
 
-                    <ErrorMessage name="gender">
+                    <ErrorMessage name="genderId">
                       {(message) => (
                         <span className="text-red-600">{message}</span>
                       )}
@@ -723,9 +722,9 @@ const EmployeesTab = () => {
 
                 <div className="grid grid-rows-2 gap-12 md:grid-rows-1 md:grid-cols-2">
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="department">Departamento</label>
+                    <label htmlFor="departmentId">Departamento</label>
 
-                    <Field name="department">
+                    <Field name="departmentId">
                       {({ field, meta }) => (
                         <Select
                           touched={meta.touched ? meta.touched : false}
@@ -748,7 +747,7 @@ const EmployeesTab = () => {
                       )}
                     </Field>
 
-                    <ErrorMessage name="department">
+                    <ErrorMessage name="departmentId">
                       {(message) => (
                         <span className="text-red-600">{message}</span>
                       )}
@@ -756,9 +755,9 @@ const EmployeesTab = () => {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="municipality">Municipio</label>
+                    <label htmlFor="municipalityId">Municipio</label>
 
-                    <Field name="municipality">
+                    <Field name="municipalityId">
                       {({ field, meta }) => (
                         <Select
                           touched={meta.touched ? meta.touched : false}
@@ -778,7 +777,7 @@ const EmployeesTab = () => {
                       )}
                     </Field>
 
-                    <ErrorMessage name="municipality">
+                    <ErrorMessage name="municipalityId">
                       {(message) => (
                         <span className="text-red-600">{message}</span>
                       )}

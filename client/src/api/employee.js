@@ -1,6 +1,6 @@
-export const employees = async () => {
+export const getEmployees = async () => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/person/employees`
+    `${import.meta.env.VITE_API_BASE_URL}api/employee`
   );
   const data = await response.json();
 
@@ -9,7 +9,7 @@ export const employees = async () => {
 
 export const getEmployeeById = async (id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/person/employees/${id}`
+    `${import.meta.env.VITE_API_BASE_URL}api/employee/${id}`
   );
   const data = await response.json();
 
@@ -18,7 +18,7 @@ export const getEmployeeById = async (id) => {
 
 export const createEmployee = async (values) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/person/employees`,
+    `${import.meta.env.VITE_API_BASE_URL}api/employee`,
     {
       method: "POST",
       headers: {
@@ -34,7 +34,7 @@ export const createEmployee = async (values) => {
 
 export const editEmployee = async (values, id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/person/employees/${id}`,
+    `${import.meta.env.VITE_API_BASE_URL}api/employee/${id}`,
     {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -48,7 +48,7 @@ export const editEmployee = async (values, id) => {
 
 export const deleteEmployee = async (id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/person/employees/${id}`,
+    `${import.meta.env.VITE_API_BASE_URL}api/employee/${id}`,
     {
       method: "DELETE",
     }
@@ -60,16 +60,7 @@ export const deleteEmployee = async (id) => {
 
 export const countEmployees = async () => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/person/count/employees`
-  );
-  const data = await response.json();
-
-  return data;
-};
-
-export const countCustomers = async () => {
-  const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/person/count/customers`
+    `${import.meta.env.VITE_API_BASE_URL}api/employee/count`
   );
   const data = await response.json();
 

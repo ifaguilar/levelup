@@ -5,12 +5,12 @@ import { toast } from "react-toastify";
 
 // API
 import {
-  getBrands,
-  getBrandById,
-  createBrand,
-  editBrand,
-  deleteBrand,
-} from "../api/brand";
+  getTeams,
+  getTeamById,
+  createTeam,
+  editTeam,
+  deleteTeam,
+} from "../api/team";
 
 // Components
 import Table from "./Table";
@@ -19,38 +19,35 @@ import Modal from "./Modal";
 import Input from "./Input";
 
 // Constants
-import { BRAND_TABLE_HEADERS } from "../constants/constants";
+import { TEAM_TABLE_HEADERS } from "../constants/constants";
 
 // Helpers
-import {
-  createBrandSchema,
-  editBrandSchema,
-} from "../helpers/validationSchema";
+import { createTeamSchema, editTeamSchema } from "../helpers/validationSchema";
 
-const BrandsTab = () => {
+const TeamsTab = () => {
   const [modalOpen, setModalOpen] = useOutletContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [rows, setRows] = useState([]);
-  const [currentBrand, setCurrentBrand] = useState([]);
-  const [headers, setHeaders] = useState(BRAND_TABLE_HEADERS);
+  const [currentTeam, setCurrentTeam] = useState([]);
+  const [headers, setHeaders] = useState(TEAM_TABLE_HEADERS);
 
   useEffect(() => {
-    const fetchBrandData = async () => {
+    const fetchTeamData = async () => {
       try {
-        const data = await getBrands();
+        const data = await getTeams();
 
         if (!data.ok) {
           throw new Error(data.message);
         }
 
-        setRows(data.brands);
+        setRows(data.teams);
       } catch (error) {
         console.error(error.message);
       }
     };
 
-    fetchBrandData();
+    fetchTeamData();
   }, []);
 
   useEffect(() => {
@@ -67,13 +64,13 @@ const BrandsTab = () => {
 
   const openEditForm = async (id) => {
     try {
-      const data = await getBrandById(id);
+      const data = await getTeamById(id);
 
       if (!data.ok) {
         throw new Error(data.message);
       }
 
-      setCurrentBrand(data.brand);
+      setCurrentTeam(data.team);
       setModalOpen(true);
       setIsEditing(true);
     } catch (error) {
@@ -83,13 +80,13 @@ const BrandsTab = () => {
 
   const handleCreate = async (values) => {
     try {
-      const data = await createBrand(values);
+      const data = await createTeam(values);
 
       if (!data.ok) {
         throw new Error(data.message);
       }
 
-      const newRow = data.brand;
+      const newRow = data.team;
 
       setRows((prevRows) => [...prevRows, newRow]);
       setModalOpen(false);
@@ -107,13 +104,13 @@ const BrandsTab = () => {
 
   const handleEdit = async (values) => {
     try {
-      const data = await editBrand(values, currentBrand.id);
+      const data = await editTeam(values, currentTeam.id);
 
       if (!data.ok) {
         throw new Error(data.message);
       }
 
-      const updatedRow = data.brand;
+      const updatedRow = data.team;
       const updatedRows = rows.map((row) =>
         row.id === updatedRow.id ? updatedRow : row
       );
@@ -135,7 +132,7 @@ const BrandsTab = () => {
   const handleDelete = async (id) => {
     if (confirm("¿Está seguro?") === true) {
       try {
-        const data = await deleteBrand(id);
+        const data = await deleteTeam(id);
 
         if (!data.ok) {
           throw new Error(data.message);
@@ -158,7 +155,7 @@ const BrandsTab = () => {
   return (
     <>
       <Button variant="primary" className="self-end" onClick={openCreateForm}>
-        Crear marca
+        Crear equipo
       </Button>
       <Table
         headers={headers}
@@ -168,7 +165,7 @@ const BrandsTab = () => {
       />
       {modalOpen === true && isEditing ? (
         <Modal
-          title="Editar marca"
+          title="Editar equipo"
           onClose={() => {
             setModalOpen(false);
             setIsEditing(false);
@@ -176,18 +173,43 @@ const BrandsTab = () => {
         >
           <Formik
             initialValues={{
-              brandName: currentBrand?.brand_name,
+              teamName: currentTeam?.team_name,
+              teamDescription: currentTeam?.team_description,
             }}
-            validationSchema={editBrandSchema}
+            validationSchema={editTeamSchema}
             onSubmit={handleEdit}
           >
             {({ isSubmitting, dirty }) => (
               <Form className="flex flex-col w-full gap-8 pr-4 overflow-y-auto max-h-96">
                 <div className="grid grid-rows-2 gap-12 md:grid-rows-1 md:grid-cols-2">
-                  <div className="flex flex-col col-span-2 gap-2">
-                    <label htmlFor="brandName">Nombre de la marca</label>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="teamName">Nombre del equipo</label>
 
-                    <Field name="brandName">
+                    <Field name="teamName">
+                      {({ field, meta }) => (
+                        <Input
+                          touched={meta.touched ? meta.touched : false}
+                          error={meta.error ? meta.error : ""}
+                          type="text"
+                          placeholder="Ingrese el nombre del equipo..."
+                          {...field}
+                        />
+                      )}
+                    </Field>
+
+                    <ErrorMessage name="teamName">
+                      {(message) => (
+                        <span className="text-red-600">{message}</span>
+                      )}
+                    </ErrorMessage>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="teamDescription">
+                      Descripción del equipo
+                    </label>
+
+                    <Field name="teamDescription">
                       {({ field, meta }) => (
                         <Input
                           touched={meta.touched ? meta.touched : false}
@@ -199,7 +221,7 @@ const BrandsTab = () => {
                       )}
                     </Field>
 
-                    <ErrorMessage name="brandName">
+                    <ErrorMessage name="teamDescription">
                       {(message) => (
                         <span className="text-red-600">{message}</span>
                       )}
@@ -222,7 +244,7 @@ const BrandsTab = () => {
 
       {modalOpen === true && isCreating ? (
         <Modal
-          title="Crear marca"
+          title="Crear equipo"
           onClose={() => {
             setModalOpen(false);
             setIsCreating(false);
@@ -230,30 +252,55 @@ const BrandsTab = () => {
         >
           <Formik
             initialValues={{
-              brandName: "",
+              teamName: "",
+              teamDescription: "",
             }}
-            validationSchema={createBrandSchema}
+            validationSchema={createTeamSchema}
             onSubmit={handleCreate}
           >
             {({ isSubmitting }) => (
               <Form className="flex flex-col w-full gap-8 pr-4 overflow-y-auto max-h-96">
                 <div className="grid grid-rows-2 gap-12 md:grid-rows-1 md:grid-cols-2">
-                  <div className="flex flex-col col-span-2 gap-2">
-                    <label htmlFor="brandName">Nombre de la marca</label>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="teamName">Nombre del equipo</label>
 
-                    <Field name="brandName">
+                    <Field name="teamName">
                       {({ field, meta }) => (
                         <Input
                           touched={meta.touched ? meta.touched : false}
                           error={meta.error ? meta.error : ""}
                           type="text"
-                          placeholder="Ingrese el nombre de la marca..."
+                          placeholder="Ingrese el nombre del equipo..."
                           {...field}
                         />
                       )}
                     </Field>
 
-                    <ErrorMessage name="brandName">
+                    <ErrorMessage name="teamName">
+                      {(message) => (
+                        <span className="text-red-600">{message}</span>
+                      )}
+                    </ErrorMessage>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="teamDescription">
+                      Descripción del equipo
+                    </label>
+
+                    <Field name="teamDescription">
+                      {({ field, meta }) => (
+                        <Input
+                          touched={meta.touched ? meta.touched : false}
+                          error={meta.error ? meta.error : ""}
+                          type="text"
+                          placeholder="Ingrese la descripción del equipo..."
+                          {...field}
+                        />
+                      )}
+                    </Field>
+
+                    <ErrorMessage name="teamDescription">
                       {(message) => (
                         <span className="text-red-600">{message}</span>
                       )}
@@ -262,7 +309,7 @@ const BrandsTab = () => {
                 </div>
 
                 <Button variant="primary" type="submit" disabled={isSubmitting}>
-                  Crear marca
+                  Crear equipo
                 </Button>
               </Form>
             )}
@@ -273,4 +320,4 @@ const BrandsTab = () => {
   );
 };
 
-export default BrandsTab;
+export default TeamsTab;

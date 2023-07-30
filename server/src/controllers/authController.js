@@ -13,7 +13,7 @@ export const login = async (req, res) => {
         person.email, employee.password
       FROM employee
       JOIN person ON employee.person_id = person.id
-      WHERE email = $1`,
+      WHERE person.email = $1 AND employee.is_active != FALSE`,
       [email]
     );
 
@@ -33,21 +33,17 @@ export const login = async (req, res) => {
         employee.id,
         person.first_name,
         person.last_name,
+        person.email,
         gender.gender_name,
         employee.profile_pic_url
       FROM employee
       JOIN person ON employee.person_id = person.id
       JOIN gender ON person.gender_id = gender.id
-      WHERE email = $1`,
+      WHERE person.email = $1 AND employee.is_active != FALSE`,
       [email]
     );
 
-    let user = query.rows[0];
-    user = {
-      ...user,
-      email: email,
-    };
-
+    const user = query.rows[0];
     const token = generateToken(user.id);
 
     return res.status(200).json({
@@ -78,27 +74,35 @@ export const signup = async (req, res) => {
     const {
       firstName,
       lastName,
-      job,
+      jobId,
       phone,
       birthdate,
-      gender,
-      municipality,
+      genderId,
+      municipalityId,
       address,
       email,
       password,
     } = req.body;
 
-    let query = await db.query("SELECT email FROM person WHERE email = $1", [
-      email,
-    ]);
+    let query = await db.query(
+      `SELECT person.email 
+      FROM employee
+      JOIN person ON employee.person_id = person.id 
+      WHERE person.email = $1 AND employee.is_active != FALSE`,
+      [email]
+    );
 
     if (query.rowCount !== 0) {
       throw new Error("El correo electrónico ya está en uso.");
     }
 
-    query = await db.query("SELECT phone FROM person WHERE phone = $1", [
-      phone,
-    ]);
+    query = await db.query(
+      `SELECT person.phone 
+      FROM employee
+      JOIN person ON employee.person_id = person.id 
+      WHERE person.phone = $1 AND employee.is_active != FALSE`,
+      [phone]
+    );
 
     if (query.rowCount !== 0) {
       throw new Error("El número de teléfono ya está en uso.");
@@ -112,10 +116,10 @@ export const signup = async (req, res) => {
         $1,
         $2
       ) RETURNING id`,
-      [address, parseInt(municipality)]
+      [address, municipalityId]
     );
 
-    const address_id = query.rows[0].id;
+    const addressId = query.rows[0].id;
 
     query = await db.query(
       `INSERT INTO person (
@@ -135,22 +139,14 @@ export const signup = async (req, res) => {
         $6,
         $7
       ) RETURNING id`,
-      [
-        firstName,
-        lastName,
-        email,
-        phone,
-        birthdate,
-        parseInt(gender),
-        address_id,
-      ]
+      [firstName, lastName, email, phone, birthdate, genderId, addressId]
     );
 
-    const person_id = query.rows[0].id;
+    const personId = query.rows[0].id;
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const encodedName = `${firstName}+${lastName}`;
-    const profile_pic_url = `https://ui-avatars.com/api/?name=${encodedName}&background=random&size=128&bold=true`;
+    const profilePicUrl = `https://ui-avatars.com/api/?name=${encodedName}&background=random&size=128&bold=true`;
 
     query = await db.query(
       `INSERT INTO employee (
@@ -164,7 +160,7 @@ export const signup = async (req, res) => {
         $3,
         $4
       )`,
-      [hashedPassword, profile_pic_url, person_id, parseInt(job)]
+      [hashedPassword, profilePicUrl, personId, jobId]
     );
 
     query = await db.query(
@@ -172,21 +168,17 @@ export const signup = async (req, res) => {
         employee.id,
         person.first_name,
         person.last_name,
+        person.email,
         gender.gender_name,
         employee.profile_pic_url
       FROM employee
       JOIN person ON employee.person_id = person.id
       JOIN gender ON person.gender_id = gender.id
-      WHERE email = $1`,
+      WHERE person.email = $1`,
       [email]
     );
 
-    let user = query.rows[0];
-    user = {
-      ...user,
-      email: email,
-    };
-
+    const user = query.rows[0];
     const token = generateToken(user.id);
 
     return res.status(201).json({
@@ -205,7 +197,7 @@ export const signup = async (req, res) => {
       });
     }
 
-    if (error.message === "El número de teléfono ya está en uso.") {
+    if (error.message === "El número telefónico ya está en uso.") {
       return res.status(400).json({
         ok: false,
         message: error.message,

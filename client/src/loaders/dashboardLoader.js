@@ -1,5 +1,5 @@
 import { countProducts } from "../api/product";
-import { countEmployees } from "../api/person";
+import { countEmployees } from "../api/employee";
 import { countSalesOrders } from "../api/salesOrder";
 import { countTickets } from "../api/ticket";
 

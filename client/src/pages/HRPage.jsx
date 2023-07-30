@@ -3,6 +3,8 @@ import React from "react";
 // Components
 import Tabs from "../components/Tabs";
 import EmployeesTab from "../components/EmployeesTab";
+import TeamsTab from "../components/TeamsTab";
+import JobsTab from "../components/JobsTab";
 
 const HRPage = () => {
   const tabList = [
@@ -16,11 +18,11 @@ const HRPage = () => {
     },
     {
       name: "Equipos",
-      component: <div>Component 3</div>,
+      component: <TeamsTab />,
     },
     {
       name: "Trabajos",
-      component: <div>Component 4</div>,
+      component: <JobsTab />,
     },
   ];
 

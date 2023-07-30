@@ -19,7 +19,7 @@ export const signupSchema = Yup.object({
     .min(3, "Por favor, ingrese un apellido con al menos 3 caracteres.")
     .required("Por favor, ingrese su apellido."),
 
-  job: Yup.string().required("Por favor, seleccione su trabajo."),
+  jobId: Yup.string().required("Por favor, seleccione su trabajo."),
 
   phone: Yup.string()
     .min(9, "Por favor, ingrese un número de teléfono válido.")
@@ -30,11 +30,11 @@ export const signupSchema = Yup.object({
     "Por favor, ingrese su fecha de nacimiento."
   ),
 
-  gender: Yup.string().required("Por favor, seleccione su género."),
+  genderId: Yup.string().required("Por favor, seleccione su género."),
 
-  department: Yup.string().required("Por favor, seleccione su departamento."),
+  departmentId: Yup.string().required("Por favor, seleccione su departamento."),
 
-  municipality: Yup.string().required("Por favor, seleccione su municipio."),
+  municipalityId: Yup.string().required("Por favor, seleccione su municipio."),
 
   address: Yup.string()
     .min(3, "Por favor, ingrese una dirección con al menos 3 caracteres.")
@@ -62,7 +62,7 @@ export const createEmployeeSchema = Yup.object({
     .min(3, "Ingrese un apellido con al menos 3 caracteres.")
     .required("Ingrese el apellido."),
 
-  job: Yup.string().required("Seleccione el trabajo."),
+  jobId: Yup.string().required("Seleccione el trabajo."),
 
   phone: Yup.string()
     .min(9, "Ingrese un número de teléfono válido.")
@@ -71,11 +71,11 @@ export const createEmployeeSchema = Yup.object({
 
   birthdate: Yup.string().required("Ingrese la fecha de nacimiento."),
 
-  gender: Yup.string().required("Seleccione el género."),
+  genderId: Yup.string().required("Seleccione el género."),
 
-  department: Yup.string().required("Seleccione el departamento."),
+  departmentId: Yup.string().required("Seleccione el departamento."),
 
-  municipality: Yup.string().required("Seleccione el municipio."),
+  municipalityId: Yup.string().required("Seleccione el municipio."),
 
   address: Yup.string()
     .min(3, "Ingrese una dirección con al menos 3 caracteres.")
@@ -103,7 +103,7 @@ export const editEmployeeSchema = Yup.object({
     .min(3, "Ingrese un apellido con al menos 3 caracteres.")
     .required("Ingrese el apellido."),
 
-  job: Yup.string().required("Seleccione un trabajo."),
+  jobId: Yup.string().required("Seleccione un trabajo."),
 
   phone: Yup.string()
     .min(9, "Ingrese un número de teléfono válido.")
@@ -112,11 +112,11 @@ export const editEmployeeSchema = Yup.object({
 
   birthdate: Yup.string().required("Ingrese la fecha de nacimiento."),
 
-  gender: Yup.string().required("Seleccione el género."),
+  genderId: Yup.string().required("Seleccione el género."),
 
-  department: Yup.string().required("Seleccione el departamento."),
+  departmentId: Yup.string().required("Seleccione el departamento."),
 
-  municipality: Yup.string().required("Seleccione el municipio."),
+  municipalityId: Yup.string().required("Seleccione el municipio."),
 
   address: Yup.string()
     .min(3, "Ingrese una dirección con al menos 3 caracteres.")
@@ -137,4 +137,48 @@ export const editBrandSchema = Yup.object({
   brandName: Yup.string()
     .min(3, "Ingrese un nombre con al menos 3 caracteres.")
     .required("Ingrese el nombre de la marca."),
+});
+
+export const createTeamSchema = Yup.object({
+  teamName: Yup.string()
+    .min(3, "Ingrese un nombre con al menos 3 caracteres.")
+    .required("Ingrese el nombre del equipo."),
+
+  teamDescription: Yup.string()
+    .min(3, "Ingrese una descripción con al menos 3 caracteres.")
+    .required("Ingrese la descripción del equipo."),
+});
+
+export const editTeamSchema = Yup.object({
+  teamName: Yup.string()
+    .min(3, "Ingrese un nombre con al menos 3 caracteres.")
+    .required("Ingrese el nombre del equipo."),
+
+  teamDescription: Yup.string()
+    .min(3, "Ingrese una descripción con al menos 3 caracteres.")
+    .required("Ingrese la descripción del equipo."),
+});
+
+export const createJobSchema = Yup.object({
+  jobTitle: Yup.string()
+    .min(3, "Ingrese un nombre de trabajo con al menos 3 caracteres.")
+    .required("Ingrese el nombre del trabajo."),
+
+  jobDescription: Yup.string()
+    .min(3, "Ingrese una descripción con al menos 3 caracteres.")
+    .required("Ingrese la descripción del trabajo."),
+
+  teamId: Yup.string().required("Seleccione el equipo."),
+});
+
+export const editJobSchema = Yup.object({
+  jobTitle: Yup.string()
+    .min(3, "Ingrese un nombre de trabajo con al menos 3 caracteres.")
+    .required("Ingrese el nombre del trabajo."),
+
+  jobDescription: Yup.string()
+    .min(3, "Ingrese una descripción con al menos 3 caracteres.")
+    .required("Ingrese la descripción del trabajo."),
+
+  teamId: Yup.string().required("Seleccione el equipo."),
 });
