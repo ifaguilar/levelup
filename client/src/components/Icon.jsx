@@ -15,6 +15,7 @@ import {
   BsPencilSquare,
   BsTrash,
   BsXLg,
+  BsClipboardCheck,
 } from "react-icons/bs";
 
 const Icon = ({ icon }) => {
@@ -40,6 +41,10 @@ const Icon = ({ icon }) => {
 
   if (icon === "analytics") {
     return <BsBarChartLine />;
+  }
+
+  if (icon === "system_logs") {
+    return <BsClipboardCheck />;
   }
 
   if (icon === "profile") {

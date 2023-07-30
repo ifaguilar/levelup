@@ -29,6 +29,11 @@ export const SIDEBAR_ITEMS = [
     text: "Analíticas",
     link: "/analytics",
   },
+  {
+    name: "system_logs",
+    text: "Bitácora de sistema",
+    link: "/system_logs",
+  },
 ];
 
 export const DROPDOWN_ITEMS = [

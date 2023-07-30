@@ -29,6 +29,7 @@ import SalesPage from "./pages/SalesPage";
 import SupportPage from "./pages/SupportPage";
 import AnalyticsPage from "./pages/AnalyticsPage";
 import ProfilePage from "./pages/ProfilePage";
+import SystemLogsPage from "./pages/SystemLogsPage";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,11 @@ const router = createBrowserRouter([
       {
         path: "/analytics",
         element: <AnalyticsPage />,
+        loader: analyticsLoader,
+      },
+      {
+        path: "/system_logs",
+        element: <SystemLogsPage />,
         loader: analyticsLoader,
       },
       {
