@@ -64,16 +64,18 @@ jobs:
       - name: Create .env file
         working-directory: ./server
         env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
           PG_HOST: ${{ secrets.PG_HOST }}
           PG_PORT: ${{ secrets.PG_PORT }}
           PG_USER: ${{ secrets.PG_USER }}
           PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
           PG_DATABASE: ${{ secrets.PG_DATABASE }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          PORT: ${{ secrets.PORT }}
         run: |
-          echo "PG_HOST=${PG_HOST}" > .env
+          echo "JWT_SECRET=${JWT_SECRET}" > .env
+          echo "PG_HOST=${PG_HOST}" >> .env
           echo "PG_PORT=${PG_PORT}" >> .env
           echo "PG_USER=${PG_USER}" >> .env
           echo "PG_PASSWORD=${PG_PASSWORD}" >> .env
           echo "PG_DATABASE=${PG_DATABASE}" >> .env
-          echo "JWT_SECRET=${JWT_SECRET}" >> .env
+          echo "PORT=${PORT}" >> .env
