@@ -14,7 +14,9 @@ const ErrorPage = () => {
         <p>Lo sentimos, un error inesperado ha ocurrido.</p>
         <p className="flex gap-2">
           <span>
-            Error {error.status}: {error.statusText}
+            {`Error ${error.status || "500"}: ${
+              error.statusText || "Internal Server Error"
+            }`}
           </span>
         </p>
       </div>
