@@ -72,8 +72,8 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
           echo "PG_HOST=${PG_HOST}" > .env
-          echo "PG_PORT=${{ PG_PORT }}" >> .env
-          echo "PG_USER=${{ PG_USER }}" >> .env
-          echo "PG_PASSWORD=${{ PG_PASSWORD }}" >> .env
-          echo "PG_DATABASE=${{ PG_DATABASE }}" >> .env
-          echo "JWT_SECRET=${{ JWT_SECRET }}" >> .env
+          echo "PG_PORT=${PG_PORT}" >> .env
+          echo "PG_USER=${PG_USER}" >> .env
+          echo "PG_PASSWORD=${PG_PASSWORD}" >> .env
+          echo "PG_DATABASE=${PG_DATABASE}" >> .env
+          echo "JWT_SECRET=${JWT_SECRET}" >> .env
