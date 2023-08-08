@@ -1,24 +1,83 @@
 import db from "../database/db.js";
 
 export const getCategory = async (req, res) => {
+  try {
+    const query = await db.query(`
+      SELECT
+        id,
+        category_name,
+        created_at,
+        modified_at
+      FROM category
+      WHERE is_active = TRUE
+      `);
+
+    const category = query.rows;
+
+    return res.status(200).json({
+      ok: true,
+      message: "Información de categorias obtenida correctamente.",
+      category: category,
+    });
+  } catch (error) {
+    console.error(error.message);
+
+    return res.status(500).json({
+      ok: false,
+      message: "Algo ha ido mal. Vuelva a intentarlo más tarde.",
+    });
+  }
+};
+
+  /*******CREATE Category ******/
+  export const createCategory = async (req, res) => {
     try {
-      const query = await db.query("SELECT * FROM category");
+      const { categoryName, categoryDescription } = req.body;
   
-      const team = query.rows;
+      let query = await db.query(
+        "SELECT category_name FROM category WHERE category_name = $1 AND is_active != FALSE",
+        [categoryName]
+      );
   
-      if (team.length === 0) {
-        throw new Error("No se encontraron categorias.");
+      if (query.rowCount !== 0) {
+        throw new Error("El nombre de la categoria ya está en uso.");
       }
   
-      return res.status(200).json({
+      query = await db.query(
+        `INSERT INTO category (
+          category_name,
+          category_description
+        ) VALUES (
+          $1,
+          $2
+        ) RETURNING id`,
+        [categoryName, categoryDescription]
+      );
+  
+      const categoryId = query.rows[0].id;
+  
+      query = await db.query(
+        `SELECT
+          id,
+          category_name,
+          created_at,
+          modified_at
+        FROM category
+        WHERE id = $1`,
+        [categoryId]
+      );
+  
+      const category = query.rows[0];
+  
+      return res.status(201).json({
         ok: true,
-        message: "Lista de categorias obtenida correctamente.",
-        team: team,
+        message: "Categoria creada correctamente.",
+        category: category,
       });
     } catch (error) {
       console.error(error.message);
   
-      if (error.message === "No se encontraron categorias.") {
+      if (error.message === "El nombre de la categoria ya está en uso.") {
         return res.status(400).json({
           ok: false,
           message: error.message,
@@ -31,52 +90,59 @@ export const getCategory = async (req, res) => {
       });
     }
   };
-
-  /*******CREATE BRAND ******/
-export const createCategory = async (req, res) => {
+  
+  export const editCategory = async (req, res) => {
     try {
-    const {
-        categoryName,
-        categoryDescription,
-      } = req.body;
-      
+      const categoryId = req.params.id;
+      const { categoryName, categoryDescription } = req.body;
+  
       let query = await db.query(
-        `INSERT INTO category (
-          category_name,
-          category_description
-        ) VALUES (
-          $1,
-          $2
-        )RETURNING id`,
-        [
-            categoryName,
-            categoryDescription,
-        ]
+        "SELECT category_name FROM category WHERE category_name = $1 AND id != $2 AND is_active != FALSE",
+        [categoryName, categoryId]
       );
-
-
-    const categoryId = query.rows[0].id;
-        
+  
+      if (query.rowCount !== 0) {
+        throw new Error("El nombre de la tarea ya está en uso.");
+      }
+  
+      query = await db.query(
+        `UPDATE 
+          category 
+        SET 
+          category_name = $1,
+          category_description = $2,
+          modified_at = NOW()
+        WHERE id = $3`,
+        [categoryName, categoryDescription, categoryId]
+      );
+  
       query = await db.query(
         `SELECT
-        category.category_name,
-        category.category_description,
-        category.created_at,
-        category.modified_at
+          id,
+          category_name,
+          created_at,
+          modified_at
         FROM category
-        WHERE category.id = $1
-        `,
+        WHERE id = $1`,
         [categoryId]
       );
-      
-      const category= query.rows[0];
-      return res.status(201).json({
+  
+      const category = query.rows[0];
+  
+      return res.status(200).json({
         ok: true,
-        message: "categoria creada correctamente.",
+        message: "categoria editado correctamente.",
         category: category,
       });
     } catch (error) {
       console.error(error.message);
+  
+      if (error.message === "El nombre de la tarea está en uso.") {
+        return res.status(400).json({
+          ok: false,
+          message: error.message,
+        });
+      }
   
       return res.status(500).json({
         ok: false,
@@ -107,3 +173,30 @@ export const createCategory = async (req, res) => {
       });
     }
   };
+
+ 
+export const getCategoryById = async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    const query = await db.query(
+      "SELECT id, category_name FROM category WHERE id = $1",
+      [categoryId]
+    );
+
+    const category = query.rows[0];
+
+    return res.status(200).json({
+      ok: true,
+      message: "Información de categoria obtenida correctamente.",
+      category: category,
+    });
+  } catch (error) {
+    console.error(error.message);
+
+    return res.status(500).json({
+      ok: false,
+      message: "Algo ha ido mal. Vuelva a intentarlo más tarde.",
+    });
+  }
+};
+

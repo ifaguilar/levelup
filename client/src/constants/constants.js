@@ -29,6 +29,11 @@ export const SIDEBAR_ITEMS = [
     text: "Analíticas",
     link: "/analytics",
   },
+  {
+    name: "system_logs",
+    text: "Bitácora de sistema",
+    link: "/system_logs",
+  },
 ];
 
 export const DROPDOWN_ITEMS = [
@@ -53,7 +58,7 @@ export const SIGNUP_FORM_BASIC_INFO = [
     placeholder: "Ingrese su apellido...",
   },
   {
-    name: "job",
+    name: "jobId",
     type: "select",
     label: "Trabajo",
     placeholder: "Seleccione su trabajo...",
@@ -74,7 +79,7 @@ export const SIGNUP_FORM_PERSONAL_INFO = [
     placeholder: "Ingrese su fecha de nacimiento...",
   },
   {
-    name: "gender",
+    name: "genderId",
     type: "select",
     label: "Género",
     placeholder: "Seleccione su género...",
@@ -83,13 +88,13 @@ export const SIGNUP_FORM_PERSONAL_INFO = [
 
 export const SIGNUP_FORM_ADDRESS_INFO = [
   {
-    name: "department",
+    name: "departmentId",
     type: "select",
     label: "Departamento",
     placeholder: "Seleccione su departamento...",
   },
   {
-    name: "municipality",
+    name: "municipalityId",
     type: "select",
     label: "Municipio",
     placeholder: "Seleccione su municipio...",
@@ -151,6 +156,28 @@ export const EMPLOYEE_TABLE_HEADERS = [
   { id: "modified_at", text: "Modificado el" },
 ];
 
+export const BRAND_TABLE_HEADERS = [
+  { id: "id", text: "ID" },
+  { id: "brand_name", text: "Nombre de la marca" },
+  { id: "created_at", text: "Creado el" },
+  { id: "modified_at", text: "Modificado el" },
+];
+
+export const TEAM_TABLE_HEADERS = [
+  { id: "id", text: "ID" },
+  { id: "team_name", text: "Nombre del equipo" },
+  { id: "created_at", text: "Creado el" },
+  { id: "modified_at", text: "Modificado el" },
+];
+
+export const JOB_TABLE_HEADERS = [
+  { id: "id", text: "ID" },
+  { id: "job_title", text: "Nombre del trabajo" },
+  { id: "team_name", text: "Equipo" },
+  { id: "created_at", text: "Creado el" },
+  { id: "modified_at", text: "Modificado el" },
+];
+
 export const DATE_TIME_OPTIONS = {
   year: "numeric",
   month: "numeric",
@@ -161,3 +188,10 @@ export const DATE_TIME_OPTIONS = {
   hour12: true,
   timeZone: "America/Tegucigalpa",
 };
+
+export const CATEGORY_TABLE_HEADERS = [
+  { id: "id", text: "ID" },
+  { id: "category_name", text: "Nombre de la categoria" },
+  { id: "created_at", text: "Creado el" },
+  { id: "modified_at", text: "Modificado el" },
+];

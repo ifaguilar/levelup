@@ -2,6 +2,7 @@ import React from "react";
 
 // Components
 import Tabs from "../components/Tabs";
+import CategoryTab from "../components/CategoryTab";
 
 const InventoryPage = () => {
   const tabList = [
@@ -15,7 +16,7 @@ const InventoryPage = () => {
     },
     {
       name: "Categorías",
-      component: <div>Component 3</div>,
+      component: <CategoryTab/>,
     },
     {
       name: "Marcas",
