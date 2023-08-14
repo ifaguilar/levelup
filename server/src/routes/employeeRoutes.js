@@ -6,6 +6,8 @@ import {
   editEmployee,
   deleteEmployee,
   countEmployees,
+  upgradeToPro,
+  cancelSubscription,
 } from "../controllers/employeeController.js";
 
 const router = Router();
@@ -18,5 +20,8 @@ router.get("/count", countEmployees);
 router.get("/:id", getEmployeeById);
 router.patch("/:id", editEmployee);
 router.delete("/:id", deleteEmployee);
+
+router.patch("/basic/:id", cancelSubscription);
+router.patch("/pro/:id", upgradeToPro);
 
 export default router;

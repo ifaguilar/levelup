@@ -35,7 +35,7 @@ import {
 const EmployeesTab = () => {
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const [modalOpen, setModalOpen] = useOutletContext();
+  const { modalOpen, setModalOpen } = useOutletContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [rows, setRows] = useState([]);

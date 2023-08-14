@@ -21,7 +21,7 @@ import { JOB_TABLE_HEADERS } from "../constants/constants";
 import { createJobSchema, editJobSchema } from "../helpers/validationSchema";
 
 const JobsTab = () => {
-  const [modalOpen, setModalOpen] = useOutletContext();
+  const { modalOpen, setModalOpen } = useOutletContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [rows, setRows] = useState([]);

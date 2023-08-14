@@ -25,7 +25,7 @@ import { TEAM_TABLE_HEADERS } from "../constants/constants";
 import { createTeamSchema, editTeamSchema } from "../helpers/validationSchema";
 
 const TeamsTab = () => {
-  const [modalOpen, setModalOpen] = useOutletContext();
+  const { modalOpen, setModalOpen } = useOutletContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [rows, setRows] = useState([]);

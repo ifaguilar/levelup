@@ -389,3 +389,97 @@ export const countEmployees = async (req, res) => {
     });
   }
 };
+
+export const upgradeToPro = async (req, res) => {
+  try {
+    const employeeId = req.params.id;
+
+    let query = await db.query(
+      `UPDATE employee 
+      SET 
+        is_pro = TRUE,
+        subscription_end_date = NOW() + INTERVAL '1 month'
+      WHERE id = $1`,
+      [employeeId]
+    );
+
+    query = await db.query(
+      `SELECT
+        employee.id,
+        person.first_name,
+        person.last_name,
+        person.email,
+        gender.gender_name,
+        employee.profile_pic_url,
+        employee.is_pro,
+        employee.subscription_end_date
+      FROM employee
+      JOIN person ON employee.person_id = person.id
+      JOIN gender ON person.gender_id = gender.id
+      WHERE employee.id = $1`,
+      [employeeId]
+    );
+
+    const user = query.rows[0];
+
+    return res.status(200).json({
+      ok: true,
+      message: "Suscripción mejorada correctamente.",
+      user: user,
+    });
+  } catch (error) {
+    console.error(error.message);
+
+    return res.status(500).json({
+      ok: false,
+      message: "Algo ha ido mal. Vuelva a intentarlo más tarde.",
+    });
+  }
+};
+
+export const cancelSubscription = async (req, res) => {
+  try {
+    const employeeId = req.params.id;
+
+    let query = await db.query(
+      `UPDATE employee 
+      SET 
+        is_pro = FALSE,
+        subscription_end_date = NULL
+      WHERE id = $1`,
+      [employeeId]
+    );
+
+    query = await db.query(
+      `SELECT
+        employee.id,
+        person.first_name,
+        person.last_name,
+        person.email,
+        gender.gender_name,
+        employee.profile_pic_url,
+        employee.is_pro,
+        employee.subscription_end_date
+      FROM employee
+      JOIN person ON employee.person_id = person.id
+      JOIN gender ON person.gender_id = gender.id
+      WHERE employee.id = $1`,
+      [employeeId]
+    );
+
+    const user = query.rows[0];
+
+    return res.status(200).json({
+      ok: true,
+      message: "Suscripción cancelada correctamente.",
+      user: user,
+    });
+  } catch (error) {
+    console.error(error.message);
+
+    return res.status(500).json({
+      ok: false,
+      message: "Algo ha ido mal. Vuelva a intentarlo más tarde.",
+    });
+  }
+};

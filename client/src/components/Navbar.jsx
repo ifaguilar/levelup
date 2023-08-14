@@ -12,12 +12,16 @@ const Navbar = ({
   setSidebarOpen,
   dropdownOpen,
   setDropdownOpen,
+  setModalOpen,
+  setProModal,
 }) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
   const handleClose = () => {
     setSidebarOpen(false);
     setDropdownOpen(false);
+    setModalOpen(false);
+    setProModal(false);
   };
 
   const openSidebar = () => {

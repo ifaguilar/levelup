@@ -104,6 +104,8 @@ CREATE TABLE employee (
   id SERIAL PRIMARY KEY,
   password VARCHAR(100) NOT NULL,
   profile_pic_url VARCHAR(255) NOT NULL,
+  is_pro BOOLEAN DEFAULT FALSE NOT NULL,
+  suscription_end_date TIMESTAMP WITHOUT TIME ZONE,
   person_id INT NOT NULL,
   job_id INT NOT NULL,
   is_active BOOLEAN DEFAULT TRUE NOT NULL,

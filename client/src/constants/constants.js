@@ -188,3 +188,26 @@ export const DATE_TIME_OPTIONS = {
   hour12: true,
   timeZone: "America/Tegucigalpa",
 };
+
+export const PRO_BENEFITS = [
+  {
+    name: "hr",
+    text: "Recursos Humanos",
+  },
+  {
+    name: "sales",
+    text: "Ventas",
+  },
+  {
+    name: "support",
+    text: "Servicio y soporte",
+  },
+  {
+    name: "analytics",
+    text: "Analíticas",
+  },
+  {
+    name: "system_logs",
+    text: "Bitácora de sistema",
+  },
+];

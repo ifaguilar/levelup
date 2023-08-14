@@ -16,6 +16,8 @@ import {
   BsTrash,
   BsXLg,
   BsClipboardCheck,
+  BsLightningCharge,
+  BsCheckCircleFill,
 } from "react-icons/bs";
 
 const Icon = ({ icon }) => {
@@ -81,6 +83,14 @@ const Icon = ({ icon }) => {
 
   if (icon === "close") {
     return <BsXLg />;
+  }
+
+  if (icon === "pro") {
+    return <BsLightningCharge />;
+  }
+
+  if (icon === "checkmark") {
+    return <BsCheckCircleFill />;
   }
 
   return null;

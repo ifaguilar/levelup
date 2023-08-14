@@ -35,7 +35,9 @@ export const login = async (req, res) => {
         person.last_name,
         person.email,
         gender.gender_name,
-        employee.profile_pic_url
+        employee.profile_pic_url,
+        employee.is_pro,
+        employee.subscription_end_date
       FROM employee
       JOIN person ON employee.person_id = person.id
       JOIN gender ON person.gender_id = gender.id
@@ -170,7 +172,9 @@ export const signup = async (req, res) => {
         person.last_name,
         person.email,
         gender.gender_name,
-        employee.profile_pic_url
+        employee.profile_pic_url,
+        employee.is_pro,
+        employee.subscription_end_date
       FROM employee
       JOIN person ON employee.person_id = person.id
       JOIN gender ON person.gender_id = gender.id

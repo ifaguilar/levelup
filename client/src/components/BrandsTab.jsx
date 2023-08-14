@@ -28,7 +28,7 @@ import {
 } from "../helpers/validationSchema";
 
 const BrandsTab = () => {
-  const [modalOpen, setModalOpen] = useOutletContext();
+  const { modalOpen, setModalOpen } = useOutletContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [rows, setRows] = useState([]);
