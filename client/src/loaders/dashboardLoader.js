@@ -1,18 +1,9 @@
-import { redirect } from "react-router-dom";
-
-// API
 import { countProducts, countProductsByCategory } from "../api/product";
 import { countEmployees } from "../api/employee";
 import { countSalesOrders, getLatestSalesOrders } from "../api/salesOrder";
 import { countTickets } from "../api/ticket";
 
 const dashboardLoader = async () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  if (!user) {
-    return redirect("/login");
-  }
-
   try {
     const { employeeCount } = await countEmployees();
     const { productCount } = await countProducts();

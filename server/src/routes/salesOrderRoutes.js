@@ -14,11 +14,11 @@ const router = Router();
 router.get("/", getSalesOrders);
 router.post("/", createSalesOrder);
 
+router.get("/latest", getLatestSalesOrders);
+router.get("/count", countSalesOrders);
+
 router.get("/:id", getSalesOrderById);
 router.patch("/:id", editSalesOrder);
 router.delete("/:id", deleteSalesOrder);
-
-router.get("/latest", getLatestSalesOrders);
-router.get("/count", countSalesOrders);
 
 export default router;

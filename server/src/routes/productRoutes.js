@@ -14,11 +14,11 @@ const router = Router();
 router.get("/", getProducts);
 router.post("/", createProduct);
 
+router.get("/count", countProducts);
+router.get("/count/category", countProductsByCategory);
+
 router.get("/:id", getProductById);
 router.patch("/:id", editProduct);
 router.delete("/:id", deleteProduct);
-
-router.get("/count", countProducts);
-router.get("/count/category", countProductsByCategory);
 
 export default router;

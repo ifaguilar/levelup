@@ -13,10 +13,10 @@ const router = Router();
 router.get("/", getTickets);
 router.post("/", createTicket);
 
+router.get("/count", countTickets);
+
 router.get("/:id", getTicketById);
 router.patch("/:id", editTicket);
 router.delete("/:id", deleteTicket);
-
-router.get("/count", countTickets);
 
 export default router;
