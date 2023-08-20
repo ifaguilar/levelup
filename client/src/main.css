@@ -71,7 +71,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .card {
-  @apply p-8 shadow-lg rounded-xl;
+  @apply flex flex-col gap-12 p-8 bg-white shadow-lg rounded-xl;
 }
 
 .card-stats {

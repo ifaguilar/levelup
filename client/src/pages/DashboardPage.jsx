@@ -56,16 +56,12 @@ const DashboardPage = () => {
         </div>
         <div className="grid grid-rows-2 gap-12 md:grid-cols-2 md:grid-rows-1 lg:grid-cols-4">
           <div className="max-w-sm md:max-w-none lg:col-span-3 card">
-            <div className="flex flex-col gap-12">
-              <h5>Últimos pedidos</h5>
-              <Table headers={headers} rows={rows} />
-            </div>
+            <h5>Últimos pedidos</h5>
+            <Table headers={headers} rows={rows} />
           </div>
           <div className="card">
-            <div className="flex flex-col gap-12">
-              <h5>Productos por categorías</h5>
-              <PieChart chartData={productsByCategory} />
-            </div>
+            <h5>Productos por categorías</h5>
+            <PieChart chartData={productsByCategory} />
           </div>
         </div>
       </div>

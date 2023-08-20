@@ -55,8 +55,6 @@ const dashboardLoader = async () => {
       },
     ];
 
-    console.log(productCountByCategory);
-
     return {
       stats: stats,
       latestSalesOrders: latestSalesOrders,

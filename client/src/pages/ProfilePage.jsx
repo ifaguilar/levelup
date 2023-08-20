@@ -77,8 +77,8 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <h4>Suscripciones activas</h4>
-      <div className="p-12 bg-white shadow-lg rounded-2xl">
+      <div className="card">
+        <h5>Suscripciones activas</h5>
         <div className="flex flex-col flex-wrap gap-12 md:items-center lg:gap-24 md:flex-row">
           <div
             className={`flex items-center justify-center w-24 h-24 border-2  rounded-full ${
