@@ -1,5 +1,15 @@
 import db from "../database/db.js";
 
+export const getSalesOrders = async (req, res) => {};
+
+export const getSalesOrderById = async (req, res) => {};
+
+export const createSalesOrder = async (req, res) => {};
+
+export const editSalesOrder = async (req, res) => {};
+
+export const deleteSalesOrder = async (req, res) => {};
+
 export const getLatestSalesOrders = async (req, res) => {
   try {
     const query = await db.query(

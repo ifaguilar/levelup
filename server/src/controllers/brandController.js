@@ -14,6 +14,10 @@ export const getBrands = async (req, res) => {
 
     const brands = query.rows;
 
+    if (brands.length === 0) {
+      throw new Error("No se encontraron marcas.");
+    }
+
     return res.status(200).json({
       ok: true,
       message: "Información de marcas obtenida correctamente.",
@@ -21,6 +25,13 @@ export const getBrands = async (req, res) => {
     });
   } catch (error) {
     console.error(error.message);
+
+    if (error.message === "No se encontraron marcas.") {
+      return res.status(400).json({
+        ok: false,
+        message: error.message,
+      });
+    }
 
     return res.status(500).json({
       ok: false,
@@ -59,7 +70,7 @@ export const createBrand = async (req, res) => {
     const { brandName } = req.body;
 
     let query = await db.query(
-      "SELECT brand_name FROM brand WHERE brand_name = $1 AND is_active != FALSE AND is_active != FALSE",
+      "SELECT brand_name FROM brand WHERE brand_name = $1 AND is_active != FALSE",
       [brandName]
     );
 
@@ -176,7 +187,7 @@ export const deleteBrand = async (req, res) => {
   try {
     const brandId = req.params.id;
     const query = await db.query(
-      "UPDATE brand SET is_active = FALSE WHERE id = $1;",
+      "UPDATE brand SET is_active = FALSE WHERE id = $1",
       [brandId]
     );
 

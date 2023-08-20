@@ -1,5 +1,15 @@
 import db from "../database/db.js";
 
+export const getTickets = async (req, res) => {};
+
+export const getTicketById = async (req, res) => {};
+
+export const createTicket = async (req, res) => {};
+
+export const editTicket = async (req, res) => {};
+
+export const deleteTicket = async (req, res) => {};
+
 export const countTickets = async (req, res) => {
   try {
     const query = await db.query(

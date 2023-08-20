@@ -33,6 +33,7 @@ export const getJobs = async (req, res) => {
 
 export const getJobById = async (req, res) => {
   try {
+    const jobId = req.params.id;
     const query = await db.query(
       `SELECT 
         id, 
@@ -42,7 +43,7 @@ export const getJobById = async (req, res) => {
       FROM job
       WHERE job.id = $1
       `,
-      [req.params.id]
+      [jobId]
     );
 
     const job = query.rows[0];
