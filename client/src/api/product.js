@@ -66,3 +66,12 @@ export const countProducts = async () => {
 
   return data;
 };
+
+export const countProductsByCategory = async () => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}api/product/count/category`
+  );
+  const data = await response.json();
+
+  return data;
+};

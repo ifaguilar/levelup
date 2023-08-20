@@ -21,6 +21,36 @@ export const countProducts = async (req, res) => {
   }
 };
 
+export const countProductsByCategory = async (req, res) => {
+  try {
+    const query = await db.query(
+      `SELECT
+        category.id,
+        category.category_name, 
+        COUNT(product.id) AS product_quantity
+      FROM category
+      LEFT JOIN product ON category.id = product.category_id
+      GROUP BY category.id, category.category_name
+      ORDER BY category.category_name`
+    );
+
+    const productCountByCategory = query.rows;
+
+    return res.status(200).json({
+      ok: true,
+      message: "Cantidad de productos por categoría obtenida correctamente.",
+      productCountByCategory: productCountByCategory,
+    });
+  } catch (error) {
+    console.error(error.message);
+
+    return res.status(500).json({
+      ok: false,
+      message: "Algo ha ido mal. Vuelva a intentarlo más tarde.",
+    });
+  }
+};
+
 export const createProduct = async (req, res) => {
   try {
     const { productName, productDescription, price, category, brand } =
@@ -40,7 +70,7 @@ export const createProduct = async (req, res) => {
         $4,
         $5
       ) RETURNING id`,
-      [productName, productDescription, price, category, parseInt(brand)]
+      [productName, productDescription, price, category, brand]
     );
 
     const productId = query.rows[0].id;
@@ -60,12 +90,12 @@ export const createProduct = async (req, res) => {
       [productId]
     );
 
-    const job = query.rows[0];
+    const product = query.rows[0];
 
     return res.status(201).json({
       ok: true,
       message: "Producto creado correctamente.",
-      job: job,
+      product: product,
     });
   } catch (error) {
     console.error(error.message);

@@ -54,6 +54,56 @@ CREATE TABLE job (
   FOREIGN KEY (team_id) REFERENCES team(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE person (
+  id SERIAL PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(50) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  birthdate DATE NOT NULL,
+  gender_id INT NOT NULL,
+  address_id INT NOT NULL,
+  is_active BOOLEAN DEFAULT TRUE NOT NULL,
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+  modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+  FOREIGN KEY (gender_id) REFERENCES gender(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (address_id) REFERENCES address(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE employee (
+  id SERIAL PRIMARY KEY,
+  password VARCHAR(100) NOT NULL,
+  profile_pic_url VARCHAR(255) NOT NULL,
+  is_pro BOOLEAN DEFAULT FALSE NOT NULL,
+  suscription_end_date TIMESTAMP WITHOUT TIME ZONE,
+  person_id INT NOT NULL,
+  job_id INT NOT NULL,
+  is_active BOOLEAN DEFAULT TRUE NOT NULL,
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+  modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+  FOREIGN KEY (person_id) REFERENCES person(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (job_id) REFERENCES job(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE customer (
+  id SERIAL PRIMARY KEY,
+  rtn VARCHAR(20) NOT NULL,
+  person_id INT NOT NULL,
+  is_active BOOLEAN DEFAULT TRUE NOT NULL,
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+  modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+  FOREIGN KEY (person_id) REFERENCES person(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+CREATE TABLE category (
+  id SERIAL PRIMARY KEY,
+  category_name VARCHAR(100) NOT NULL,
+  category_description VARCHAR(255) NOT NULL,
+  is_active BOOLEAN DEFAULT TRUE NOT NULL,
+  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+  modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL
+);
+
 CREATE TABLE brand (
   id SERIAL PRIMARY KEY,
   brand_name VARCHAR(100) NOT NULL,
@@ -74,56 +124,6 @@ CREATE TABLE supplier (
   FOREIGN KEY (address_id) REFERENCES address(id)
 );
 
-CREATE TABLE person (
-  id SERIAL PRIMARY KEY,
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL,
-  email VARCHAR(50) NOT NULL,
-  phone VARCHAR(20) NOT NULL,
-  birthdate DATE NOT NULL,
-  gender_id INT NOT NULL,
-  address_id INT NOT NULL,
-  is_active BOOLEAN DEFAULT TRUE NOT NULL,
-  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
-  modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
-  FOREIGN KEY (gender_id) REFERENCES gender(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (address_id) REFERENCES address(id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE customer (
-  id SERIAL PRIMARY KEY,
-  rtn VARCHAR(20) NOT NULL,
-  person_id INT NOT NULL,
-  is_active BOOLEAN DEFAULT TRUE NOT NULL,
-  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
-  modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
-  FOREIGN KEY (person_id) REFERENCES person(id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE employee (
-  id SERIAL PRIMARY KEY,
-  password VARCHAR(100) NOT NULL,
-  profile_pic_url VARCHAR(255) NOT NULL,
-  is_pro BOOLEAN DEFAULT FALSE NOT NULL,
-  suscription_end_date TIMESTAMP WITHOUT TIME ZONE,
-  person_id INT NOT NULL,
-  job_id INT NOT NULL,
-  is_active BOOLEAN DEFAULT TRUE NOT NULL,
-  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
-  modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
-  FOREIGN KEY (person_id) REFERENCES person(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (job_id) REFERENCES job(id) ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-CREATE TABLE category (
-  id SERIAL PRIMARY KEY,
-  category_name VARCHAR(100) NOT NULL,
-  category_description VARCHAR(255) NOT NULL,
-  is_active BOOLEAN DEFAULT TRUE NOT NULL,
-  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
-  modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL
-);
-
 CREATE TABLE product (
   id SERIAL PRIMARY KEY,
   product_name VARCHAR(100) NOT NULL,
@@ -131,11 +131,13 @@ CREATE TABLE product (
   price DECIMAL(10, 2) NOT NULL,
   category_id INT NOT NULL,
   brand_id INT NOT NULL,
+  supplier_id INT NOT NULL,
   is_active BOOLEAN DEFAULT TRUE NOT NULL,
   created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
   modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
   FOREIGN KEY (category_id) REFERENCES category(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (brand_id) REFERENCES brand(id) ON UPDATE CASCADE ON DELETE CASCADE
+  FOREIGN KEY (brand_id) REFERENCES brand(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (supplier_id) REFERENCES supplier(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE stock (
@@ -574,6 +576,14 @@ INSERT INTO municipality (municipality_name, department_id) VALUES ('Sulaco', 18
 INSERT INTO municipality (municipality_name, department_id) VALUES ('Victoria', 18);
 INSERT INTO municipality (municipality_name, department_id) VALUES ('Yorito', 18);
 
+-- Address
+INSERT INTO address (address_description, municipality_id) VALUES ('Ciudad Universitaria', 110);
+INSERT INTO address (address_description, municipality_id) VALUES ('Colonia Kennedy', 110);
+INSERT INTO address (address_description, municipality_id) VALUES ('Residencial Las Uvas', 110);
+INSERT INTO address (address_description, municipality_id) VALUES ('Prados Universitarios', 110);
+INSERT INTO address (address_description, municipality_id) VALUES ('Residencial El Trapiche', 110);
+INSERT INTO address (address_description, municipality_id) VALUES ('Lomas del Toncontin', 110);
+
 -- Team
 INSERT INTO team (team_name, team_description) VALUES ('TI', 'Gestiona la infraestructura tecnológica y brinda soporte técnico.');
 INSERT INTO team (team_name, team_description) VALUES ('Recursos Humanos', 'Administra el personal y las políticas laborales.');
@@ -794,28 +804,7 @@ VALUES (
   5
 );
 
--- Address
-INSERT INTO address (address_description, municipality_id) VALUES ('Ciudad Universitaria', 110);
-
 -- Person
-INSERT INTO person (
-  first_name,
-  last_name,
-  email,
-  phone,
-  birthdate,
-  gender_id,
-  address_id
-) VALUES (
-  'John',
-  'Doe',
-  'john.doe@levelup-is.tech',
-  '0000-0000',
-  '1990-01-01',
-  2,
-  1
-);
-
 INSERT INTO person (
   first_name,
   last_name,
@@ -827,11 +816,137 @@ INSERT INTO person (
 ) VALUES (
   'Jane',
   'Doe',
-  'jane.doe@levelup-is.tech',
-  '1111-1111',
+  'jane.doe@example.com',
+  '0000-0000',
   '1990-01-01',
   1,
   1
+);
+
+INSERT INTO person (
+  first_name,
+  last_name,
+  email,
+  phone,
+  birthdate,
+  gender_id,
+  address_id
+) VALUES (
+  'John',
+  'Doe',
+  'john.doe@example.com',
+  '1111-1111',
+  '1990-01-01',
+  2,
+  1
+);
+
+INSERT INTO person (
+  first_name,
+  last_name,
+  email,
+  phone,
+  birthdate,
+  gender_id,
+  address_id
+) VALUES (
+  'Alice',
+  'Smith',
+  'alice.smith@example.com',
+  '2222-2222',
+  '1988-05-15',
+  2,
+  2
+);
+
+INSERT INTO person (
+  first_name,
+  last_name,
+  email,
+  phone,
+  birthdate,
+  gender_id,
+  address_id
+) VALUES (
+  'Bob',
+  'Johnson',
+  'bob.johnson@example.com',
+  '3333-3333',
+  '1992-09-03',
+  1,
+  2
+);
+
+INSERT INTO person (
+  first_name,
+  last_name,
+  email,
+  phone,
+  birthdate,
+  gender_id,
+  address_id
+) VALUES (
+  'Emily',
+  'Johnson',
+  'emily.johnson@example.com',
+  '4444-4444',
+  '1995-03-12',
+  2,
+  3
+);
+
+INSERT INTO person (
+  first_name,
+  last_name,
+  email,
+  phone,
+  birthdate,
+  gender_id,
+  address_id
+) VALUES (
+  'Michael',
+  'Williams',
+  'michael.williams@example.com',
+  '5555-5555',
+  '1989-08-28',
+  1,
+  4
+);
+
+INSERT INTO person (
+  first_name,
+  last_name,
+  email,
+  phone,
+  birthdate,
+  gender_id,
+  address_id
+) VALUES (
+  'Sophia',
+  'Martinez',
+  'sophia.martinez@example.com',
+  '6666-6666',
+  '1993-10-24',
+  2,
+  5
+);
+
+INSERT INTO person (
+  first_name,
+  last_name,
+  email,
+  phone,
+  birthdate,
+  gender_id,
+  address_id
+) VALUES (
+  'Ethan',
+  'Davis',
+  'ethan.davis@example.com',
+  '7777-7777',
+  '1991-12-08',
+  1,
+  6
 );
 
 -- Employee
@@ -842,7 +957,7 @@ INSERT INTO employee (
   job_id
 ) VALUES (
   '$2a$10$QTiuId6lKWW1reqPJRIpyu3x3L5cmTGYyeTBGGcoKpSk3QPfdbNcO',
-  'https://ui-avatars.com/api/?name=John+Doe&background=random&size=128',
+  'https://ui-avatars.com/api/?name=Jane+Doe&background=random&size=128',
   1,
   1
 );
@@ -854,56 +969,399 @@ INSERT INTO employee (
   job_id
 ) VALUES (
   '$2a$10$QTiuId6lKWW1reqPJRIpyu3x3L5cmTGYyeTBGGcoKpSk3QPfdbNcO',
-  'https://ui-avatars.com/api/?name=Jane+Doe&background=random&size=128',
+  'https://ui-avatars.com/api/?name=John+Doe&background=random&size=128',
   2,
   1
 );
 
+INSERT INTO employee (
+  password,
+  profile_pic_url,
+  person_id,
+  job_id
+) VALUES (
+  '$2a$10$QTiuId6lKWW1reqPJRIpyu3x3L5cmTGYyeTBGGcoKpSk3QPfdbNcO',
+  'https://ui-avatars.com/api/?name=Alice+Smith&background=random&size=128',
+  3,
+  2
+);
+
+INSERT INTO employee (
+  password,
+  profile_pic_url,
+  person_id,
+  job_id
+) VALUES (
+  '$2a$10$QTiuId6lKWW1reqPJRIpyu3x3L5cmTGYyeTBGGcoKpSk3QPfdbNcO',
+  'https://ui-avatars.com/api/?name=Bob+Johnson&background=random&size=128',
+  4,
+  2
+);
+
+-- Customer
+INSERT INTO customer (rtn, person_id) VALUES ('08011995001234', 5);
+INSERT INTO customer (rtn, person_id) VALUES ('05011989005678', 6);
+INSERT INTO customer (rtn, person_id) VALUES ('10011993001234', 7);
+INSERT INTO customer (rtn, person_id) VALUES ('12011991005678', 8);
+
+-- Category
+INSERT INTO category (
+  category_name, 
+  category_description
+) VALUES (
+  'Teclados', 
+  'Dispositivos de entrada para escribir y controlar la computadora'
+);
+
+INSERT INTO category (
+  category_name, 
+  category_description
+) VALUES (
+  'Mouse', 
+  'Dispositivos de control para mover el cursor en la pantalla'
+);
+
+INSERT INTO category (
+  category_name, 
+  category_description
+) VALUES (
+  'Webcams', 
+  'Cámaras para capturar video y transmitir en línea'
+);
+
+INSERT INTO category (
+  category_name, 
+  category_description
+) VALUES (
+  'Tarjetas Gráficas', 
+  'Componentes que procesan gráficos y video en la computadora'
+);
+
+INSERT INTO category (
+  category_name, 
+  category_description
+) VALUES (
+  'Procesadores', 
+  'Unidades de procesamiento central para ejecutar tareas en la computadora'
+);
+
+INSERT INTO category (
+  category_name, 
+  category_description
+) VALUES (
+  'Monitores', 
+  'Dispositivos de salida para mostrar imágenes y gráficos'
+);
+
+INSERT INTO category (
+  category_name, 
+  category_description
+) VALUES (
+  'Almacenamiento', 
+  'Dispositivos para guardar y acceder a datos digitales'
+);
+
+INSERT INTO category (
+  category_name, 
+  category_description
+) VALUES (
+  'Memoria', 
+  'Componentes que almacenan datos temporalmente para la computadora'
+);
+
 -- Brand
-INSERT INTO brand (
-  brand_name
+INSERT INTO brand (brand_name) VALUES ('Logitech');
+INSERT INTO brand (brand_name) VALUES ('Nvidia');
+INSERT INTO brand (brand_name) VALUES ('AMD');
+INSERT INTO brand (brand_name) VALUES ('Intel');
+INSERT INTO brand (brand_name) VALUES ('HyperX');
+INSERT INTO brand (brand_name) VALUES ('Corsair');
+INSERT INTO brand (brand_name) VALUES ('Gigabyte');
+INSERT INTO brand (brand_name) VALUES ('Razer');
+INSERT INTO brand (brand_name) VALUES ('Samsung');
+INSERT INTO brand (brand_name) VALUES ('Seagate');
+
+-- Supplier
+INSERT INTO supplier (supplier_name, email, phone, address_id)
+VALUES ('TechCo Innovations', 'techco@example.com', '2222-1111', 1);
+
+INSERT INTO supplier (supplier_name, email, phone, address_id)
+VALUES ('ElectroTech Solutions', 'electrotech@example.com', '3333-2222', 2);
+
+INSERT INTO supplier (supplier_name, email, phone, address_id)
+VALUES ('CyberWave Components', 'cyberwave@example.com', '4444-3333', 3);
+
+INSERT INTO supplier (supplier_name, email, phone, address_id)
+VALUES ('FuturaTech Hardware', 'futuratech@example.com', '5555-4444', 4);
+
+-- Products
+INSERT INTO product (
+  product_name,
+  product_description,
+  price,
+  category_id,
+  brand_id,
+  supplier_id
 ) VALUES (
-  'Logitech'
+  'Teclado Logitech G Pro X', 
+  'Teclado mecánico para juegos', 
+  3199.99, 
+  1, 
+  1,
+  1
 );
 
-INSERT INTO brand (
-  brand_name
+INSERT INTO product (
+  product_name,
+  product_description,
+  price,
+  category_id,
+  brand_id,
+  supplier_id
 ) VALUES (
-  'Nvidia'
+  'Mouse Logitech G502 Hero', 
+  'Mouse de alto rendimiento para juegos', 
+  1999.99, 
+  2, 
+  1,
+  1
 );
 
-INSERT INTO brand (
-  brand_name
+INSERT INTO product (
+  product_name,
+  product_description,
+  price,
+  category_id,
+  brand_id,
+  supplier_id
 ) VALUES (
-  'AMD'
+  'Webcam Logitech C920 HD', 
+  'Webcam Full HD para transmisiones', 
+  2499.99, 
+  3, 
+  1,
+  1
 );
 
-INSERT INTO brand (
-  brand_name
+INSERT INTO product (
+  product_name,
+  product_description,
+  price,
+  category_id,
+  brand_id,
+  supplier_id
 ) VALUES (
-  'Intel'
+  'Nvidia GeForce RTX 3080', 
+  'Tarjeta gráfica de alta gama para juegos', 
+  1799.99, 
+  4, 
+  2,
+  2
 );
 
-INSERT INTO brand (
-  brand_name
+INSERT INTO product (
+  product_name,
+  product_description,
+  price,
+  category_id,
+  brand_id,
+  supplier_id
 ) VALUES (
-  'HyperX'
+  'AMD Radeon RX 6800 XT', 
+  'Tarjeta gráfica para juegos con trazado de rayos', 
+  15999.99, 
+  4, 
+  3,
+  2
 );
 
-INSERT INTO brand (
-  brand_name
+INSERT INTO product (
+  product_name,
+  product_description,
+  price,
+  category_id,
+  brand_id,
+  supplier_id
 ) VALUES (
-  'Corsair'
+  'AMD Ryzen 7 4700G', 
+  'APU con gráficos Radeon integrados', 
+  6199.99, 
+  4, 
+  3,
+  2
 );
 
-INSERT INTO brand (
-  brand_name
+INSERT INTO product (
+  product_name,
+  product_description,
+  price,
+  category_id,
+  brand_id,
+  supplier_id
 ) VALUES (
-  'Gigabyte'
+  'AMD Ryzen 9 5900X', 
+  'Procesador de escritorio de alto rendimiento', 
+  13599.99, 
+  5, 
+  3,
+  3
 );
 
-INSERT INTO brand (
-  brand_name
+INSERT INTO product (
+  product_name,
+  product_description,
+  price,
+  category_id,
+  brand_id,
+  supplier_id
 ) VALUES (
-  'Razer'
+  'Monitor Curvo Samsung de 27 pulgadas',
+  'Monitor LED curvo con resolución Full HD',
+  12399.99,
+  6,
+  7,
+  3
 );
+
+INSERT INTO product (
+  product_name,
+  product_description,
+  price,
+  category_id,
+  brand_id,
+  supplier_id
+) VALUES (
+  'Disco Duro Externo Portátil Seagate de 1TB',
+  'Disco duro externo portátil USB 3.0 para almacenamiento de datos',
+  1999.99,
+  7,
+  8,
+  3
+);
+
+INSERT INTO product (
+  product_name,
+  product_description,
+  price,
+  category_id,
+  brand_id,
+  supplier_id
+) VALUES (
+  'Memoria RAM Corsair Vengeance RGB Pro 16GB',
+  'Módulo de memoria DDR4 con iluminación RGB',
+  3199.99,
+  8,
+  6,
+  4
+);
+
+-- Stock
+INSERT INTO stock (quantity, product_id)
+VALUES (100, 1); -- Teclado Logitech G Pro X
+
+INSERT INTO stock (quantity, product_id)
+VALUES (150, 2); -- Mouse Logitech G502 Hero
+
+INSERT INTO stock (quantity, product_id)
+VALUES (75, 3); -- Webcam Logitech C920 HD
+
+INSERT INTO stock (quantity, product_id)
+VALUES (50, 4); -- Nvidia GeForce RTX 3080
+
+INSERT INTO stock (quantity, product_id)
+VALUES (25, 5); -- AMD Radeon RX 6800 XT
+
+INSERT INTO stock (quantity, product_id)
+VALUES (15, 6); -- AMD Ryzen 7 4700G
+
+INSERT INTO stock (quantity, product_id)
+VALUES (20, 7); -- AMD Ryzen 9 5900X
+
+INSERT INTO stock (quantity, product_id)
+VALUES (40, 8); -- Monitor Curvo Samsung de 27 pulgadas
+
+INSERT INTO stock (quantity, product_id)
+VALUES (60, 9); -- Disco Duro Externo Portátil Seagate de 1TB
+
+INSERT INTO stock (quantity, product_id)
+VALUES (50, 10); -- Memoria RAM Corsair Vengeance RGB Pro 16GB
+
+-- Order Details
+INSERT INTO order_details (
+  quantity,
+  total_amount,
+  product_id
+) VALUES (
+  2,
+  (SELECT price * 2 FROM product WHERE id = 1),
+  1
+); -- Teclado Logitech G Pro X
+
+INSERT INTO order_details (
+  quantity,
+  total_amount,
+  product_id
+) VALUES (
+  3,
+  (SELECT price * 3 FROM product WHERE id = 2),
+  2
+); -- Mouse Logitech G502 Hero
+
+INSERT INTO order_details (
+  quantity,
+  total_amount,
+  product_id
+) VALUES (
+  1,
+  (SELECT price * 1 FROM product WHERE id = 3),
+  3
+); -- Webcam Logitech C920 HD
+
+INSERT INTO order_details (
+  quantity,
+  total_amount,
+  product_id
+) VALUES (
+  2,
+  (SELECT price * 2 FROM product WHERE id = 4),
+  4
+); -- Nvidia GeForce RTX 3080
+
+-- Sales Order
+INSERT INTO sales_order (
+  order_date,
+  order_status,
+  ship_date,
+  customer_id,
+  employee_id,
+  order_details_id
+) VALUES (
+  '2023-08-16',
+  'Pendiente',
+  '2023-08-20',
+  1,
+  1,
+  1
+);
+
+INSERT INTO sales_order (
+  order_date,
+  order_status,
+  ship_date,
+  customer_id,
+  employee_id,
+  order_details_id
+) VALUES (
+  '2023-08-16',
+  'Pendiente',
+  '2023-08-20',
+  2,
+  2,
+  2
+);
+
+-- System Actions
+INSERT INTO system_action (system_action_name) VALUES ('Crear');
+INSERT INTO system_action (system_action_name) VALUES ('Leer');
+INSERT INTO system_action (system_action_name) VALUES ('Actualizar');
+INSERT INTO system_action (system_action_name) VALUES ('Eliminar');

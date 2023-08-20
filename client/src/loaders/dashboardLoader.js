@@ -1,6 +1,6 @@
-import { countProducts } from "../api/product";
+import { countProducts, countProductsByCategory } from "../api/product";
 import { countEmployees } from "../api/employee";
-import { countSalesOrders } from "../api/salesOrder";
+import { countSalesOrders, getLatestSalesOrders } from "../api/salesOrder";
 import { countTickets } from "../api/ticket";
 
 const dashboardLoader = async () => {
@@ -9,6 +9,8 @@ const dashboardLoader = async () => {
     const { productCount } = await countProducts();
     const { salesOrderCount } = await countSalesOrders();
     const { ticketCount } = await countTickets();
+    const { latestSalesOrders } = await getLatestSalesOrders();
+    const { productCountByCategory } = await countProductsByCategory();
 
     const stats = [
       {
@@ -53,9 +55,15 @@ const dashboardLoader = async () => {
       },
     ];
 
-    return { stats: stats };
+    console.log(productCountByCategory);
+
+    return {
+      stats: stats,
+      latestSalesOrders: latestSalesOrders,
+      productCountByCategory: productCountByCategory,
+    };
   } catch (error) {
-    return { stats: [] };
+    return { stats: [], latestSalesOrders: [], productCountByCategory: [] };
   }
 };
 

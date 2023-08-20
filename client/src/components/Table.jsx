@@ -4,10 +4,13 @@ import React from "react";
 import IconButton from "./IconButton";
 import Icon from "./Icon";
 
+// Constants
+import { DATE_HEADERS } from "../constants/constants";
+
 // Utils
 import { formatDateTime } from "../utils/dateTime";
 
-const Table = ({ headers, rows, onEdit, onDelete }) => {
+const Table = ({ headers, rows, onEdit = null, onDelete = null }) => {
   if (rows.length === 0) {
     return <p>No se encontraron datos.</p>;
   }
@@ -20,7 +23,7 @@ const Table = ({ headers, rows, onEdit, onDelete }) => {
             {headers.map((header) => (
               <th key={header.id}>{header.text}</th>
             ))}
-            <th>Acciones</th>
+            {onEdit !== null && onDelete !== null ? <th>Acciones</th> : null}
           </tr>
         </thead>
         <tbody>
@@ -30,30 +33,32 @@ const Table = ({ headers, rows, onEdit, onDelete }) => {
                 <td
                   key={`${row.id}-${header.id}`}
                   title={
-                    header.id === "created_at" || header.id === "modified_at"
+                    DATE_HEADERS.includes(header.id)
                       ? formatDateTime(row[header.id])
                       : row[header.id]
                   }
                 >
-                  {header.id === "created_at" || header.id === "modified_at"
+                  {DATE_HEADERS.includes(header.id)
                     ? formatDateTime(row[header.id])
                     : row[header.id]}
                 </td>
               ))}
-              <td>
-                <IconButton
-                  className="hover:bg-amber-100 hover:text-amber-500"
-                  onClick={() => onEdit(row.id)}
-                >
-                  <Icon icon="edit" />
-                </IconButton>
-                <IconButton
-                  className="hover:bg-red-100 hover:text-red-500"
-                  onClick={() => onDelete(row.id)}
-                >
-                  <Icon icon="delete" />
-                </IconButton>
-              </td>
+              {onEdit !== null && onDelete !== null ? (
+                <td>
+                  <IconButton
+                    className="hover:bg-amber-100 hover:text-amber-500"
+                    onClick={() => onEdit(row.id)}
+                  >
+                    <Icon icon="edit" />
+                  </IconButton>
+                  <IconButton
+                    className="hover:bg-red-100 hover:text-red-500"
+                    onClick={() => onDelete(row.id)}
+                  >
+                    <Icon icon="delete" />
+                  </IconButton>
+                </td>
+              ) : null}
             </tr>
           ))}
         </tbody>

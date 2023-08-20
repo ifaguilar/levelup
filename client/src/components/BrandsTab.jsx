@@ -31,8 +31,8 @@ const BrandsTab = () => {
   const { modalOpen, setModalOpen } = useOutletContext();
   const [isEditing, setIsEditing] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-  const [rows, setRows] = useState([]);
   const [currentBrand, setCurrentBrand] = useState([]);
+  const [rows, setRows] = useState([]);
   const [headers, setHeaders] = useState(BRAND_TABLE_HEADERS);
 
   useEffect(() => {

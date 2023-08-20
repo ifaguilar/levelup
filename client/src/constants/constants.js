@@ -178,6 +178,15 @@ export const JOB_TABLE_HEADERS = [
   { id: "modified_at", text: "Modificado el" },
 ];
 
+export const LATEST_SALES_ORDERS_TABLE_HEADERS = [
+  { id: "id", text: "ID" },
+  { id: "customer_name", text: "Nombre del cliente" },
+  { id: "email", text: "Correo electrónico" },
+  { id: "total_amount", text: "Cantidad" },
+  { id: "order_date", text: "Fecha de pedido" },
+  { id: "order_status", text: "Estado del pedido" },
+];
+
 export const DATE_TIME_OPTIONS = {
   year: "numeric",
   month: "numeric",
@@ -188,6 +197,8 @@ export const DATE_TIME_OPTIONS = {
   hour12: true,
   timeZone: "America/Tegucigalpa",
 };
+
+export const DATE_HEADERS = ["created_at", "modified_at", "order_date"];
 
 export const PRO_BENEFITS = [
   {
@@ -210,4 +221,16 @@ export const PRO_BENEFITS = [
     name: "system_logs",
     text: "Bitácora de sistema",
   },
+];
+
+export const TAILWIND_CSS_COLORS = [
+  "#ef4444", // Red 500
+  "#f97316", // Orange 500
+  "#f59e0b", // Amber 500
+  "#22c55e", // Green 500
+  "#14b8a6", // Teal 500
+  "#3b82f6", // Blue 500
+  "#6366f1", // Indigo 500
+  "#d946ef", // Fuchsia 500
+  "#f43f5e", // Rose 500
 ];
