@@ -156,13 +156,6 @@ export const EMPLOYEE_TABLE_HEADERS = [
   { id: "modified_at", text: "Modificado el" },
 ];
 
-export const BRAND_TABLE_HEADERS = [
-  { id: "id", text: "ID" },
-  { id: "brand_name", text: "Nombre de la marca" },
-  { id: "created_at", text: "Creado el" },
-  { id: "modified_at", text: "Modificado el" },
-];
-
 export const TEAM_TABLE_HEADERS = [
   { id: "id", text: "ID" },
   { id: "team_name", text: "Nombre del equipo" },
@@ -174,6 +167,31 @@ export const JOB_TABLE_HEADERS = [
   { id: "id", text: "ID" },
   { id: "job_title", text: "Nombre del trabajo" },
   { id: "team_name", text: "Equipo" },
+  { id: "created_at", text: "Creado el" },
+  { id: "modified_at", text: "Modificado el" },
+];
+
+export const PRODUCT_TABLE_HEADERS = [
+  { id: "id", text: "ID" },
+  { id: "product_name", text: "Nombre del producto" },
+  { id: "brand_name", text: "Marca" },
+  { id: "category_name", text: "Categoría" },
+  { id: "supplier_name", text: "Proveedor" },
+  { id: "created_at", text: "Creado el" },
+  { id: "modified_at", text: "Modificado el" },
+];
+
+export const CATEGORY_TABLE_HEADERS = [
+  { id: "id", text: "ID" },
+  { id: "category_name", text: "Nombre de la categoría" },
+  { id: "category_description", text: "Descripción de la categoría" },
+  { id: "created_at", text: "Creado el" },
+  { id: "modified_at", text: "Modificado el" },
+];
+
+export const BRAND_TABLE_HEADERS = [
+  { id: "id", text: "ID" },
+  { id: "brand_name", text: "Nombre de la marca" },
   { id: "created_at", text: "Creado el" },
   { id: "modified_at", text: "Modificado el" },
 ];

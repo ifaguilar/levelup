@@ -1,24 +1,24 @@
-export const getTickets = async () => {
+export const getCategories = async () => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/ticket`
+    `${import.meta.env.VITE_API_BASE_URL}api/category`
   );
   const data = await response.json();
 
   return data;
 };
 
-export const getTicketById = async (id) => {
+export const getCategoryById = async (id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/ticket/${id}`
+    `${import.meta.env.VITE_API_BASE_URL}api/category/${id}`
   );
   const data = await response.json();
 
   return data;
 };
 
-export const createTicket = async (values) => {
+export const createCategory = async (values) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/ticket`,
+    `${import.meta.env.VITE_API_BASE_URL}api/category`,
     {
       method: "POST",
       headers: {
@@ -32,9 +32,9 @@ export const createTicket = async (values) => {
   return data;
 };
 
-export const editTicket = async (values, id) => {
+export const editCategory = async (values, id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/ticket/${id}`,
+    `${import.meta.env.VITE_API_BASE_URL}api/category/${id}`,
     {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -46,21 +46,12 @@ export const editTicket = async (values, id) => {
   return data;
 };
 
-export const deleteTicket = async (id) => {
+export const deleteCategory = async (id) => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/ticket/${id}`,
+    `${import.meta.env.VITE_API_BASE_URL}api/category/${id}`,
     {
       method: "DELETE",
     }
-  );
-  const data = await response.json();
-
-  return data;
-};
-
-export const countTickets = async () => {
-  const response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}api/ticket/count`
   );
   const data = await response.json();
 

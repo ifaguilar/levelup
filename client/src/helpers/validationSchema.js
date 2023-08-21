@@ -127,18 +127,6 @@ export const editEmployeeSchema = Yup.object({
     .required("Ingrese el correo electrónico."),
 });
 
-export const createBrandSchema = Yup.object({
-  brandName: Yup.string()
-    .min(3, "Ingrese un nombre con al menos 3 caracteres.")
-    .required("Ingrese el nombre de la marca."),
-});
-
-export const editBrandSchema = Yup.object({
-  brandName: Yup.string()
-    .min(3, "Ingrese un nombre con al menos 3 caracteres.")
-    .required("Ingrese el nombre de la marca."),
-});
-
 export const createTeamSchema = Yup.object({
   teamName: Yup.string()
     .min(3, "Ingrese un nombre con al menos 3 caracteres.")
@@ -181,4 +169,78 @@ export const editJobSchema = Yup.object({
     .required("Ingrese la descripción del trabajo."),
 
   teamId: Yup.string().required("Seleccione el equipo."),
+});
+
+export const createProductSchema = Yup.object({
+  productName: Yup.string()
+    .min(3, "Ingrese un nombre con al menos 3 caracteres.")
+    .required("Ingrese el nombre del producto."),
+
+  productDescription: Yup.string()
+    .min(3, "Ingrese una descripción con al menos 3 caracteres.")
+    .required("Ingrese la descripción del producto."),
+
+  price: Yup.number("Ingrese un precio válido.")
+    .min(1, "Ingrese un precio válido.")
+    .positive("Ingrese un precio válido.")
+    .required("Ingrese un precio válido."),
+
+  brandId: Yup.string().required("Seleccione la marca."),
+
+  categoryId: Yup.string().required("Seleccione la categoría."),
+
+  supplierId: Yup.string().required("Seleccione el proveedor."),
+});
+
+export const editProductSchema = Yup.object({
+  productName: Yup.string()
+    .min(3, "Ingrese un nombre con al menos 3 caracteres.")
+    .required("Ingrese el nombre del producto."),
+
+  productDescription: Yup.string()
+    .min(3, "Ingrese una descripción con al menos 3 caracteres.")
+    .required("Ingrese la descripción del producto."),
+
+  price: Yup.number("Ingrese un precio válido.")
+    .min(1, "Ingrese un precio válido.")
+    .positive("Ingrese un precio válido.")
+    .required("Ingrese un precio válido."),
+
+  brandId: Yup.string().required("Seleccione la marca."),
+
+  categoryId: Yup.string().required("Seleccione la categoría."),
+
+  supplierId: Yup.string().required("Seleccione el proveedor."),
+});
+
+export const createBrandSchema = Yup.object({
+  brandName: Yup.string()
+    .min(3, "Ingrese un nombre con al menos 3 caracteres.")
+    .required("Ingrese el nombre de la marca."),
+});
+
+export const editBrandSchema = Yup.object({
+  brandName: Yup.string()
+    .min(3, "Ingrese un nombre con al menos 3 caracteres.")
+    .required("Ingrese el nombre de la marca."),
+});
+
+export const createCategorySchema = Yup.object({
+  categoryName: Yup.string()
+    .min(3, "Ingrese un nombre con al menos 3 caracteres.")
+    .required("Ingrese el nombre de la categoría."),
+
+  categoryDescription: Yup.string()
+    .min(3, "Ingrese una descripción con al menos 3 caracteres.")
+    .required("Ingrese la descripción de la categoría."),
+});
+
+export const editCategorySchema = Yup.object({
+  categoryName: Yup.string()
+    .min(3, "Ingrese un nombre con al menos 3 caracteres.")
+    .required("Ingrese el nombre de la categoría."),
+
+  categoryDescription: Yup.string()
+    .min(3, "Ingrese una descripción con al menos 3 caracteres.")
+    .required("Ingrese la descripción de la categoría."),
 });

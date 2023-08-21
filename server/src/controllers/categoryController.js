@@ -6,6 +6,7 @@ export const getCategories = async (req, res) => {
       `SELECT 
         id,
         category_name,
+        category_description,
         created_at,
         modified_at
       FROM category
@@ -72,7 +73,7 @@ export const createCategory = async (req, res) => {
 
     let query = await db.query(
       "SELECT category_name FROM category WHERE category_name = $1 AND is_active != FALSE",
-      [brandName]
+      [categoryName]
     );
 
     if (query.rowCount !== 0) {
@@ -96,6 +97,7 @@ export const createCategory = async (req, res) => {
       `SELECT
         id,
         category_name,
+        category_description,
         created_at,
         modified_at
       FROM category
@@ -149,6 +151,7 @@ export const editCategory = async (req, res) => {
       `SELECT
         id,
         category_name,
+        category_description,
         created_at,
         modified_at
       FROM category
