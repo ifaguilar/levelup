@@ -268,7 +268,9 @@ export const deleteProduct = async (req, res) => {
 
 export const countProducts = async (req, res) => {
   try {
-    const query = await db.query("SELECT COUNT(*) FROM product");
+    const query = await db.query(
+      "SELECT COUNT(*) FROM product WHERE is_active = TRUE"
+    );
 
     const productCount = parseInt(query.rows[0].count);
 
@@ -307,6 +309,37 @@ export const countProductsByCategory = async (req, res) => {
       ok: true,
       message: "Cantidad de productos por categoría obtenida correctamente.",
       productCountByCategory: productCountByCategory,
+    });
+  } catch (error) {
+    console.error(error.message);
+
+    return res.status(500).json({
+      ok: false,
+      message: "Algo ha ido mal. Vuelva a intentarlo más tarde.",
+    });
+  }
+};
+
+export const countProductsByBrand = async (req, res) => {
+  try {
+    const query = await db.query(
+      `SELECT
+        brand.id,
+        brand.brand_name, 
+        COUNT(product.id) AS product_quantity
+      FROM brand
+      JOIN product ON brand.id = product.brand_id
+      WHERE brand.is_active = TRUE AND product.is_active = TRUE
+      GROUP BY brand.id, brand.brand_name
+      ORDER BY brand.brand_name`
+    );
+
+    const productCountByBrand = query.rows;
+
+    return res.status(200).json({
+      ok: true,
+      message: "Cantidad de productos por marca obtenida correctamente.",
+      productCountByBrand: productCountByBrand,
     });
   } catch (error) {
     console.error(error.message);

@@ -390,6 +390,38 @@ export const countEmployees = async (req, res) => {
   }
 };
 
+export const countEmployeesByGender = async (req, res) => {
+  try {
+    const query = await db.query(
+      `SELECT
+        gender.id,
+        gender.gender_name, 
+        COUNT(employee.id) AS employee_quantity
+      FROM gender
+      JOIN person ON gender.id = person.gender_id
+      JOIN employee ON person.id = employee.person_id
+      WHERE gender.is_active = TRUE AND employee.is_active = TRUE
+      GROUP BY gender.id, gender.gender_name
+      ORDER BY gender.gender_name`
+    );
+
+    const employeeCountByGender = query.rows;
+
+    return res.status(200).json({
+      ok: true,
+      message: "Cantidad de empleados por género obtenida correctamente.",
+      employeeCountByGender: employeeCountByGender,
+    });
+  } catch (error) {
+    console.error(error.message);
+
+    return res.status(500).json({
+      ok: false,
+      message: "Algo ha ido mal. Vuelva a intentarlo más tarde.",
+    });
+  }
+};
+
 export const upgradeToPro = async (req, res) => {
   try {
     const employeeId = req.params.id;

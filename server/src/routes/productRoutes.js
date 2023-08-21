@@ -7,6 +7,7 @@ import {
   deleteProduct,
   countProducts,
   countProductsByCategory,
+  countProductsByBrand,
 } from "../controllers/productController.js";
 
 const router = Router();
@@ -16,6 +17,7 @@ router.post("/", createProduct);
 
 router.get("/count", countProducts);
 router.get("/count/category", countProductsByCategory);
+router.get("/count/brand", countProductsByBrand);
 
 router.get("/:id", getProductById);
 router.patch("/:id", editProduct);

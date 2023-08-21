@@ -67,6 +67,15 @@ export const countEmployees = async () => {
   return data;
 };
 
+export const countEmployeesByGender = async () => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}api/employee/count/gender`
+  );
+  const data = await response.json();
+
+  return data;
+};
+
 export const cancelSubscription = async (id) => {
   const response = await fetch(
     `${import.meta.env.VITE_API_BASE_URL}api/employee/basic/${id}`,

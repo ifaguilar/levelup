@@ -17,7 +17,7 @@ export const countTickets = async (req, res) => {
       SELECT COUNT(*)
       FROM ticket
       JOIN ticket_status ON ticket.ticket_status_id = ticket_status.id
-      WHERE ticket_status.status_name = 'Open'
+      WHERE ticket_status.status_name = 'Open' AND ticket.is_active = TRUE
       `
     );
 

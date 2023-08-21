@@ -6,6 +6,7 @@ import {
   editEmployee,
   deleteEmployee,
   countEmployees,
+  countEmployeesByGender,
   upgradeToPro,
   cancelSubscription,
 } from "../controllers/employeeController.js";
@@ -16,6 +17,7 @@ router.get("/", getEmployees);
 router.post("/", createEmployee);
 
 router.get("/count", countEmployees);
+router.get("/count/gender", countEmployeesByGender);
 
 router.get("/:id", getEmployeeById);
 router.patch("/:id", editEmployee);

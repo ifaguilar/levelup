@@ -24,6 +24,7 @@ export const getLatestSalesOrders = async (req, res) => {
       JOIN customer ON sales_order.customer_id = customer.id
       JOIN person ON customer.person_id = person.id
       JOIN order_details ON sales_order.order_details_id = order_details.id
+      WHERE sales_order.is_active = TRUE
       ORDER BY sales_order.order_date DESC
       LIMIT 10`
     );
@@ -47,7 +48,9 @@ export const getLatestSalesOrders = async (req, res) => {
 
 export const countSalesOrders = async (req, res) => {
   try {
-    const query = await db.query("SELECT COUNT(*) FROM sales_order");
+    const query = await db.query(
+      "SELECT COUNT(*) FROM sales_order WHERE is_active = TRUE"
+    );
 
     const salesOrderCount = parseInt(query.rows[0].count);
 

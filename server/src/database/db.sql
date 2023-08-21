@@ -1,5 +1,25 @@
+DROP TRIGGER IF EXISTS event_logging_trigger ON ticket;
+DROP TRIGGER IF EXISTS event_logging_trigger ON ticket_status;
+DROP TRIGGER IF EXISTS event_logging_trigger ON sales_order;
+DROP TRIGGER IF EXISTS event_logging_trigger ON order_details;
+DROP TRIGGER IF EXISTS event_logging_trigger ON stock;
+DROP TRIGGER IF EXISTS event_logging_trigger ON product;
+DROP TRIGGER IF EXISTS event_logging_trigger ON supplier;
+DROP TRIGGER IF EXISTS event_logging_trigger ON brand;
+DROP TRIGGER IF EXISTS event_logging_trigger ON category;
+DROP TRIGGER IF EXISTS event_logging_trigger ON customer;
+DROP TRIGGER IF EXISTS event_logging_trigger ON employee;
+DROP TRIGGER IF EXISTS event_logging_trigger ON person;
+DROP TRIGGER IF EXISTS event_logging_trigger ON job;
+DROP TRIGGER IF EXISTS event_logging_trigger ON team;
+DROP TRIGGER IF EXISTS event_logging_trigger ON address;
+DROP TRIGGER IF EXISTS event_logging_trigger ON municipality;
+DROP TRIGGER IF EXISTS event_logging_trigger ON department;
+DROP TRIGGER IF EXISTS event_logging_trigger ON gender;
+
+DROP FUNCTION IF EXISTS log_event_trigger();
+
 DROP TABLE IF EXISTS system_log CASCADE;
-DROP TABLE IF EXISTS system_action CASCADE;
 DROP TABLE IF EXISTS ticket CASCADE;
 DROP TABLE IF EXISTS ticket_status CASCADE;
 DROP TABLE IF EXISTS sales_order CASCADE;
@@ -224,22 +244,101 @@ CREATE TABLE ticket (
   FOREIGN KEY (product_id) REFERENCES product(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE system_action (
-  id SERIAL PRIMARY KEY,
-  system_action_name VARCHAR(20) NOT NULL,
-  created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
-  modified_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL
-);
-
 CREATE TABLE system_log (
   id SERIAL PRIMARY KEY,
-  system_log_message VARCHAR(255) NOT NULL,
-  system_log_date TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
-  system_action_id INT NOT NULL,
-  employee_id INT NOT NULL,
-  FOREIGN KEY (system_action_id) REFERENCES system_action(id) ON UPDATE CASCADE ON DELETE CASCADE,
-  FOREIGN KEY (employee_id) REFERENCES employee(id) ON UPDATE CASCADE ON DELETE CASCADE
+  event_type VARCHAR(50) NOT NULL,
+  event_time TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
+  table_name VARCHAR(50) NOT NULL,
+  record_id INT NOT NULL
 );
+
+-- Functions
+CREATE OR REPLACE FUNCTION log_event_trigger()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO system_log (event_type, table_name, record_id)
+  VALUES (
+    TG_OP,          -- Operation type (INSERT or UPDATE)
+    TG_TABLE_NAME,  -- Name of the table
+    NEW.id          -- Assuming 'id' is the primary key of the main table
+  );
+  
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Trigger
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON gender
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON department
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON municipality
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON address
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON team
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON job
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON person
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON employee
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON customer
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON category
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON brand
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON supplier
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON product
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON stock
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON order_details
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON sales_order
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON ticket_status
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
+
+CREATE TRIGGER event_logging_trigger
+AFTER INSERT OR UPDATE ON ticket
+FOR EACH ROW EXECUTE FUNCTION log_event_trigger();
 
 -- Gender
 INSERT INTO gender (gender_name) VALUES ('Femenino');
@@ -599,7 +698,7 @@ INSERT INTO municipality (municipality_name, department_id) VALUES ('Yorito', 18
 
 -- Address
 INSERT INTO address (address_description, municipality_id) VALUES ('Ciudad Universitaria', 110);
-INSERT INTO address (address_description, municipality_id) VALUES ('Colonia Kennedy', 110);
+INSERT INTO address (address_description, municipality_id) VALUES ('Ciudad Universitaria', 110);
 INSERT INTO address (address_description, municipality_id) VALUES ('Residencial Las Uvas', 110);
 INSERT INTO address (address_description, municipality_id) VALUES ('Prados Universitarios', 110);
 INSERT INTO address (address_description, municipality_id) VALUES ('Residencial El Trapiche', 110);
@@ -1380,9 +1479,3 @@ INSERT INTO sales_order (
   2,
   2
 );
-
--- System Actions
-INSERT INTO system_action (system_action_name) VALUES ('Crear');
-INSERT INTO system_action (system_action_name) VALUES ('Leer');
-INSERT INTO system_action (system_action_name) VALUES ('Actualizar');
-INSERT INTO system_action (system_action_name) VALUES ('Eliminar');
