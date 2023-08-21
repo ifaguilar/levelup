@@ -205,6 +205,14 @@ export const LATEST_SALES_ORDERS_TABLE_HEADERS = [
   { id: "order_status", text: "Estado del pedido" },
 ];
 
+export const SYSTEM_LOG_TABLE_HEADERS = [
+  { id: "id", text: "ID" },
+  { id: "event_type", text: "Tipo de evento" },
+  { id: "event_time", text: "Fecha y hora" },
+  { id: "table_name", text: "Nombre de la tabla" },
+  { id: "record_id", text: "ID de campo" },
+];
+
 export const DATE_TIME_OPTIONS = {
   year: "numeric",
   month: "numeric",
@@ -216,7 +224,12 @@ export const DATE_TIME_OPTIONS = {
   timeZone: "America/Tegucigalpa",
 };
 
-export const DATE_HEADERS = ["created_at", "modified_at", "order_date"];
+export const DATE_HEADERS = [
+  "created_at",
+  "modified_at",
+  "order_date",
+  "event_time",
+];
 
 export const PRO_BENEFITS = [
   {

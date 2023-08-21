@@ -17,6 +17,7 @@ import supportLoader from "./loaders/supportLoader";
 import analyticsLoader from "./loaders/analyticsLoader";
 import profileLoader from "./loaders/profileLoader";
 import signupLoader from "./loaders/signupLoader";
+import systemLogLoader from "./loaders/systemLogLoader";
 
 // Pages
 import DashboardPage from "./pages/DashboardPage";
@@ -70,7 +71,7 @@ const router = createBrowserRouter([
       {
         path: "/system_logs",
         element: <SystemLogsPage />,
-        loader: analyticsLoader,
+        loader: systemLogLoader,
       },
       {
         path: "/profile",

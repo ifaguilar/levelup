@@ -18,6 +18,7 @@ import brandRouter from "./src/routes/brandRoutes.js";
 import categoryRouter from "./src/routes/categoryRoutes.js";
 import stockRouter from "./src/routes/stockRoutes.js";
 import supplierRouter from "./src/routes/supplierRoutes.js";
+import systemLogRouter from "./src/routes/systemLogRoutes.js";
 
 // Functions
 dotenv.config();
@@ -47,6 +48,7 @@ app.use("/api/supplier", supplierRouter);
 app.use("/api/sales_order", salesOrderRouter);
 app.use("/api/ticket", ticketRouter);
 app.use("/api/stock", stockRouter);
+app.use("/api/system_log", systemLogRouter);
 
 // Initialization
 app.listen(PORT, () => console.log(`Server started on port ${PORT}.`));
